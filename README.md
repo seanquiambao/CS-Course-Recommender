@@ -1,30 +1,28 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=8862854&assignment_repo_type=AssignmentRepo)
- > As you complete each section you **must** remove the prompt text. Every *turnin* of this project includes points for formatting of this README so keep it clean and keep it up to date. 
- > Prompt text is any lines beginning with "\>"
- > Replace anything between \<...\> with your project specifics and remove angle brackets. For example, you need to name your project and replace the header right below this line with that title (no angle brackets). 
-# \<Project title\>
- > Your author list below should include links to all members GitHub (remove existing author).
+
+# \<Computer Science Course Recommender\>
  
- > Authors: \<[Jeffrey McDaniel](https://github.com/jmcda001)\>
-
- > You will be forming a group of **FOUR** students and working on an interesting project. The project has 4 phases, each one with specific requirements. A list of proposed project ideas that have been successful in previous quarters is listed in the project specifications document on Canvas. You can select an idea from the list and start thinking about the features you will implement. If you want to propose your own original idea, you will have to contact your instructor to discuss the project and obtain written permission before you submit your project proposal (Phase 1). The project work should be divided almost equally among team members. You can of course help each other, but it needs to be clear who will be responsible for which features. Additionally, you are expected to follow Scrum patterns, specifically the use of a Scrum (Project) board, Sprints, and Scrum meetings.
-
- > ## Expectations
- > * The backend of your project should be implemented in C++. If you wish to choose anoher programming language (e.g. Java, Python), please discuss with your lab TA to obtain permission.
- > * You can incorporate additional technologies/tools but they must be approved (in writing) by the instructor or the TA.
- > * Each member of the group **must** be committing code regularly and make sure their code is correctly attributed to them. We will be checking attributions to determine if there was equal contribution to the project.
- > * **Each member of the group must actively participate in the Github Project board, writing unit tests, and reviewing commited code.**
-> * All project phases are to be submitted to this GitHub repository. You should modify this README file to reflect the different phases of the project. In addition, you should regularly hold sprint meetings with your group. You will need to hold two to three scrum/check-in meetings with your lab TA/reader at different times in addition to the final demo.
+ > Authors: \<[Nathan Chan](https://github.com/nchannoob)\>, \<[Jeric Pascua](https://github.com/jericj)>, \<[Sean Quiambao](https://github.com/toastmeal)>, \<[Zachary Ta](https://github.com/ZacharyTa)>
 
 ## Project Description
- > Your project description should summarize the project you are proposing. Be sure to include:
- > * Why is it important or interesting to you?
- > * What languages/tools/technologies do you plan to use? (This list may change over the course of the project)
- > * What will be the input/output of your project?
- > * What are the features that the project provides?
- > This description should be in enough detail that the TA/instructor can determine the complexity of the project and if it is sufficient for the team members to complete in the time allotted. 
- > 
- > You also need to set up an empty project board using GitHub projects (board view). Make sure you add the board under your project repository. You should also have a Product Backlog and In testing columns added.
+### Importance of the Project
+ > This project is important to us since we wanted a more efficient and easier way to plan out our courses. We wanted to create a program that recommends engineering courses to take for each quarter depending on how difficult the class is (based from the UCR difficulty database spreadsheet). This program can allow us to even out our workload throughout the school year and help us take less strenuous classes.
+### Planned Technologies
+ > We plan to use the following technologies in this class:
+ > * **Vim** - A text editor used to create files and edit code for our project
+ > * **Visual** Studio Code - A source-code editor used to create files and write code for our program and is also used as a visual debugging tool.
+ > * **Git** - A local-based version control system used to keep track of changes made by the contributors of the repository. We will use GitHub as our cloud-based to push any changes into our repository.
+ > * **C++** - A programming language used to code our project.
+ > * **GDB (GNU Debugger)** - A dynamic debugger tool used to identify issues within our program. This is used to detect bugs in our C++ code.
+ > * **Valgrind** - An instrumentation framework used to check for memory management and threading bugs. This is used to detect memory leaks and dangling pointers within our program.
+ > * **LibXL** - A C++ Excel Library for reading/writing data from an excel file (Google Sheets UCR Difficulty Database will be exported into an excel file). This will be used to read input given by the user, which will be discussed in a later segment.
+### Input/Output
+ > **Input** - The user can input the courses they have already taken, this can be inputted through either a .txt file or an Excel file. This input will be used to calculate the amount of credits taken, which can be used to calculate the amount of credits required. This will also be used as a prerequisite checklist for specific computer science courses. The user can also input classes into their planner, if they meet the required prerequisite.
+ > **Output** - The program will output a list of engineering courses, ordered from the least to most difficult. It will only output the courses that the user needs, and will only show the courses that meet the user’s prerequisites requirements. The program will also output the planner the user has created, which will output the average difficulty and the amount of units for that planned quarter.
+### Features
+ > * The user can create a planner for each quarter. The user is allowed to add or remove courses from the planner. When adding courses, the program will sum up all the units. The program will also show the average difficulty so that the user can see the amount of workload they have. This average difficulty is calculated based on the UCR difficulty database. This program can also calculate the expected graduation date.
+ > * The user can search up the courses. The search bar will be divided whether the course is a lower division course, upper division course, or elective course. The program will also show some breadth courses for each area of study (we will focus on the three most popular breadth courses for each area of study). The user can select a course in the view finder, which will display the courses prerequisite, amount of units, and difficulty.
+
  > ## Phase II
  > In addition to completing the "Class Diagram" section below, you will need to:
  > * Create an "Epic" (note) for each feature. Place these epics in the `Product Backlog` column
