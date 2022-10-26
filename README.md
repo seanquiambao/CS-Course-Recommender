@@ -1,8 +1,8 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=8862854&assignment_repo_type=AssignmentRepo)
 
-# \<Computer Science Course Recommender\>
+# \Computer Science Course Recommender\
  
- > Authors: \<[Nathan Chan](https://github.com/nchannoob)\>, \<[Jeric Pascua](https://github.com/jericj)>, \<[Sean Quiambao](https://github.com/toastmeal)>, \<[Zachary Ta](https://github.com/ZacharyTa)>
+ > Authors: \[Nathan Chan](https://github.com/nchannoob)\, \[Jeric Pascua](https://github.com/jericj), \[Sean Quiambao](https://github.com/toastmeal), <[Zachary Ta](https://github.com/ZacharyTa)
 
 ## Project Description
 ### Importance of the Project
