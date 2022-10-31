@@ -23,19 +23,19 @@
  > * The user can create a planner for each quarter. The user is allowed to add or remove courses from the planner. When adding courses, the program will sum up all the units. The program will also show the average difficulty so that the user can see the amount of workload they have. This average difficulty is calculated based on the UCR difficulty database. This program can also calculate the expected graduation date.
  > * The user can search up the courses. The search bar will be divided whether the course is a lower division course, upper division course, or elective course. The program will also show some breadth courses for each area of study (we will focus on the three most popular breadth courses for each area of study). The user can select a course in the view finder, which will display the courses prerequisite, amount of units, and difficulty.
 
- > ## Phase II
- > In addition to completing the "Class Diagram" section below, you will need to:
- > * Create an "Epic" (note) for each feature. Place these epics in the `Product Backlog` column
- > * Complete your first *sprint planning* meeting to plan out the next 7 days of work.
- >   * Break down the "Epics" into smaller actionable user stories (i.e. smaller development tasks). Convert them into issues and assign them to team members. Place these in the `TODO` column.
- >   * These cards should represent roughly 7 days worth of development time for your team. Then, once the sprint is over you should be repeating these steps to plan a new sprint, taking you until your second scrum meeting with the reader in phase III.
- > * Schedule two check-ins using Calendly. You need to pick both time slots during your lab on week 6. Your entire team must be present for both check-ins.
- >   * The first check-in needs to be scheduled with your lab TA. During that meeting, you will discuss your project design/class diagram from phase II.
- >   * The second check-in should be scheduled with a reader. During that meeting you will discuss:
- >     * The tasks you are planning for the first sprint
- >     * How work will be divided between the team members
-## Class Diagram
- > Include a **class diagram(s)** for your project and a **description** of the diagram(s). Your class diagram(s) should include all the main classes you plan for the project. This should be in sufficient detail that another group could pick up the project this point and successfully complete it. Use proper UML notation (as discussed in the course slides).
+## Class Diagrams
+### First UML Diagram
+
+ > This first class diagram includes the structure of the program. The SQL class will use a sqlite3 header file to call certain SQL functions such as reading off UCR difficulty database, or creating tables for each classes. 
+ > * The SQL class will have a int rc variable that will determine whether the database can be opened or not. SQL class will hold an SQL object (db *sqlite3) that will provide commands for the SQL language.
+ 
+ > * The SQL() function will first open up the database file and check whether the file has sucessfully opened. It will then read off the file and execute SQL commands to construct tables for each UCR classes. ~SQL() destructor will deallocate any memory used up in the program. callBack() function essentially acts as a helper function that retrieves data from the database. insert_into() functions adds UCR classes in to the SQL tables.
+ > * In the Course Recommender class it will hold a list of strings that will hold the breadth requirements the students need to satisfy. Add requirements prompts the user to add requirements they need ot complete. The printEasiest functions will print a list of 3 easiest classes for each breadth requirements. 
+ ### Second UML Diagram
+
+ > The second class diagram has the same structure as the first UML class diagram, however there is an additional class for the planner section. 
+ > * The planner will essentially take a list of strings of each classes the user has added. The getAverage will return the average of the difficulty of all of the user classes. Determine difficulty will return a string that states whether the planned quarter is either easy, decent, or hard (based on the average difficulty). The planner will also call the printPlanner() function to print the list of classes and their associated difficulty.
+
  
  > ## Phase III
  > You will need to schedule a check-in for the second scrum meeting with the same reader you had your first scrum meeting with (using Calendly). Your entire team must be present. This meeting will occur on week 8 during lab time.
