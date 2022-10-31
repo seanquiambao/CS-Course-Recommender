@@ -25,14 +25,15 @@
 
 ## Class Diagrams
 ### First UML Diagram
-![UML Diagram of SQL class and Course Recommender Class](images/classDiagram.jpg)
+![UML Diagram of SQL class and Course Recommender Class](https://github.com/cs100/final-project-squia003-zta002-jpasc029-nchan089/blob/master/images/classDiagram.png)
+
  > This first class diagram includes the structure of the program. The SQL class will use a sqlite3 header file to call certain SQL functions such as reading off UCR difficulty database, or creating tables for each classes. 
  > * The SQL class will have a int rc variable that will determine whether the database can be opened or not. SQL class will hold an SQL object (db *sqlite3) that will provide commands for the SQL language.
  
  > * The SQL() function will first open up the database file and check whether the file has sucessfully opened. It will then read off the file and execute SQL commands to construct tables for each UCR classes. ~SQL() destructor will deallocate any memory used up in the program. callBack() function essentially acts as a helper function that retrieves data from the database. insert_into() functions adds UCR classes in to the SQL tables.
  > * In the Course Recommender class it will hold a list of strings that will hold the breadth requirements the students need to satisfy. Add requirements prompts the user to add requirements they need ot complete. The printEasiest functions will print a list of 3 easiest classes for each breadth requirements. 
  ### Second UML Diagram
-![UML Diagram with additional planer Class](images/classDiagramPlan.jpg)
+![UML Diagram with additional planer Class](https://github.com/cs100/final-project-squia003-zta002-jpasc029-nchan089/blob/master/images/classDiagramPlan.png)
  > The second class diagram has the same structure as the first UML class diagram, however there is an additional class for the planner section. 
  > * The planner will essentially take a list of strings of each classes the user has added. The getAverage will return the average of the difficulty of all of the user classes. Determine difficulty will return a string that states whether the planned quarter is either easy, decent, or hard (based on the average difficulty). The planner will also call the printPlanner() function to print the list of classes and their associated difficulty.
 
