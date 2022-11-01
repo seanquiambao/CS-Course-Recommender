@@ -1,11 +1,7 @@
 // CourseRecommender.h
 #include <string>
 #include <vector>
-<<<<<<< HEAD
 
-
-=======
->>>>>>> a691bb97b1777b54d89da1b30d0e332bc8b7e566
 #include "SQL.h"
 
 using namespace std;

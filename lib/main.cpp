@@ -1,5 +1,4 @@
 #include <iostream>
-<<<<<<< HEAD
 #include <string>
 
 #include "../include/CourseRecommender.h"
@@ -31,18 +30,3 @@ int main() {
 
     return 0;
 }
-=======
-
-#include "../include/CourseRecommender.h"
-using namespace std;
-
-int main() {
-    CourseRecommender advisor;
-    cout << "Compiled YES" << endl;
-    // advisor.addRequirement("SOC-A");
-    // advisor.addRequirement("SOC-B");
-    // advisor.addRequirement("HUM-B");
-    // advisor.printRec();
-
-}
->>>>>>> 5b9f266 (Added Folders, cpp, and header files)
