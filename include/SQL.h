@@ -1,6 +1,6 @@
 // SQL.h
 #include <string>
-#include <sqlite3.h> 
+#include "../sqlite3/src/sqlite3.h"
 
 using namespace std;
 
