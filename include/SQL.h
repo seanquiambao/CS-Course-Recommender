@@ -1,6 +1,6 @@
 // SQL.h
 #include <string>
-#include <sqlite3.h> 
+#include "sqlite3.h"
 
 using namespace std;
 
@@ -14,10 +14,13 @@ class SQL {
         char *zErrMsg;
         int rc;
 
-        //_easyClass("SOC-A") -> "ECON 003"
-        string _easyClass(string requirementName);
+        
 
-        string _getRating(string courseName);
+        // Returns course name with lowest difficulty rating for passed in breadth requirement
+        string _easyClass(string requirementName);//_easyClass("SOC-A") -> "ECON003"
+
+        //Returns average difficulty rating for passed in course name (based on UCR difficulty database)
+        string _getRating(string courseName); //_getRating("ECON003") -> 2.4
 
     public:
 

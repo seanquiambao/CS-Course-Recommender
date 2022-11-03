@@ -6,24 +6,15 @@
 
 using namespace std;
 
-// class CourseRecommender : public SQL {
-//     private:
-//         vector<string> requiredBreadth;
-//     public:
-//         void printRec() {
-//             for (unsigned i = 0; i < requiredBreadth.size(); ++i) {
-//                 cout << "Easiest " + requiredBreadth.at(i) + "Course: " + getEasiestCouse(requiredBreadth.at(i)) << endl;
-//             }
-//         }
-
 void CourseRecommender::printRec() {
     for (unsigned i = 0; i < this->requiredBreadth.size(); ++i) {
         cout << "Easiest " + this->requiredBreadth.at(i) + "Course: " + getEasiestCourse(requiredBreadth.at(i)) << endl;
     }
 }
 
+//PrintTopEasiest("ART") -> "DNCD003"
 void CourseRecommender::printEasiestClasses(string requirementName) {
-    string poop = getEasiestCourse(requirementName);
+    //ECON003
 }
 
 void CourseRecommender::addRequirement(string requirementName) {
