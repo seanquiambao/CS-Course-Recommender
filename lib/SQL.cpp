@@ -72,7 +72,10 @@ void SQL::_createTable(string tableName) {
     }
 }
 
+<<<<<<< HEAD
 // Insert entry into 'Course Difficulty' table (coursename, difficulty rating)
+=======
+>>>>>>> 9be7c888e1fb8b0fa4e10fece942a00a0618a565
 void SQL::_insertDifficultyTable(string name, string difficulty) {
     // Load insert test statement
     string sql = "INSERT INTO test VALUES('" + name + "', " + difficulty + ");";
@@ -117,7 +120,10 @@ string SQL::getEasiestCourse(string requirementName, int limit) {
     //Class: ECON003 Rating: 2.3
 }
 
+<<<<<<< HEAD
 // Read Data from ucr difficulty database csv
+=======
+>>>>>>> 9be7c888e1fb8b0fa4e10fece942a00a0618a565
 void SQL::readData(string fileName) {
     ifstream inFS;
     string courseName;
