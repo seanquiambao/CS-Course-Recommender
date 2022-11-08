@@ -25,18 +25,12 @@ class SQL {
         void _createTable(string tableName);
 
         // Insert data into test table
-<<<<<<< HEAD
-        void _insertDifficultyTable(string name, string difficulty);
-=======
         void _insertDifficultyTable(string, string);
->>>>>>> 9be7c888e1fb8b0fa4e10fece942a00a0618a565
 
         //_easyClass("SOC-A") -> "ECON 003"
         string _easyClass(string requirementName);
 
         string _getRating(string courseName);
-
-        
 
     public:
 
@@ -46,23 +40,13 @@ class SQL {
         // Destructor
         ~SQL();
 
-<<<<<<< HEAD
-=======
-        //Getters
-        void createTable(string tableName) {_createTable(tableName);}
-        void insertDifficultyTable(string name, string age) {_insertDifficultyTable(name, age);}
-
->>>>>>> 9be7c888e1fb8b0fa4e10fece942a00a0618a565
         // Prints out the data entries of test table
         void printTable(string tableName);
 
         //getEasiestClass
         string getEasiestCourse(string requirementName, int limit = 3);
-<<<<<<< HEAD
 
         vector<vector<string>> fetchTable(string tableName);
-=======
->>>>>>> 9be7c888e1fb8b0fa4e10fece942a00a0618a565
         void readData(string);
 };
 
