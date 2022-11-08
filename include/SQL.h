@@ -25,12 +25,14 @@ class SQL {
         void _createTable(string tableName);
 
         // Insert data into test table
-        void _insertTestTable(string name, string age);
+        void _insertDifficultyTable(string, string);
 
         //_easyClass("SOC-A") -> "ECON 003"
         string _easyClass(string requirementName);
 
         string _getRating(string courseName);
+
+        
 
     public:
 
@@ -42,13 +44,14 @@ class SQL {
 
         //Getters
         void createTable(string tableName) {_createTable(tableName);}
-        void insertTestTable(string name, string age) {_insertTestTable(name, age);}
+        void insertDifficultyTable(string name, string age) {_insertDifficultyTable(name, age);}
 
         // Prints out the data entries of test table
         void printTestTable();
 
         //getEasiestClass
         string getEasiestCourse(string requirementName, int limit = 3);
+        void readData(string);
 };
 
 #endif

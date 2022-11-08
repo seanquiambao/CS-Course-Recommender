@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -71,9 +72,9 @@ void SQL::_createTable(string tableName) {
     }
 }
 
-void SQL::_insertTestTable(string name, string age) {
+void SQL::_insertDifficultyTable(string name, string difficulty) {
     // Load insert test statement
-    string sql = "INSERT INTO test VALUES('" + name + "', " + age + ");";
+    string sql = "INSERT INTO test VALUES('" + name + "', " + difficulty + ");";
 
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
@@ -104,4 +105,31 @@ string SQL::getEasiestCourse(string requirementName, int limit) {
     string rating = _getRating(easyClass);
     return "Class: " + easyClass + " Rating: " + rating;
     //Class: ECON003 Rating: 2.3
+}
+
+void SQL::readData(string fileName) {
+    ifstream inFS;
+    string courseName;
+    string difficulty;
+
+    cout << "Opening user database file" << endl;
+    inFS.open(fileName);
+
+    if(!inFS.is_open()) {
+        cout << "Error opening file" << endl;
+        return;
+    }
+
+    while(!inFS.eof())
+    {
+        getline(inFS, courseName, ',');
+        getline(inFS, difficulty, '\n');
+        _insertDifficultyTable(courseName, difficulty);
+    }
+
+    inFS.close();
+
+
+
+
 }
