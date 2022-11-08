@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 
@@ -57,13 +58,13 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName){
 // create type of SQL table in database based on passed in tableName
 void SQL::_createTable(string tableName) {
 
-    if (tableName == "test") {
+    if (tableName == "Course Difficulty") {
 
         //SQL language: Create Table with passed in tableName
-        string sql = "CREATE TABLE IF NOT EXISTS test"
+        string sql = "CREATE TABLE IF NOT EXISTS 'Course Difficulty'"
                     "("
                     "name TEXT PRIMARY KEY NOT NULL,"
-                    "age INT NOT NULL"
+                    "difficulty REAL NOT NULL"
                     ");";
         
         // Execute SQL Statement
@@ -71,19 +72,29 @@ void SQL::_createTable(string tableName) {
     }
 }
 
-void SQL::_insertTestTable(string name, string age) {
+// Insert entry into 'Course Difficulty' table (coursename, difficulty rating)
+void SQL::_insertDifficultyTable(string name, string difficulty) {
     // Load insert test statement
-    string sql = "INSERT INTO test VALUES('" + name + "', " + age + ");";
+    string sql = "INSERT INTO test VALUES('" + name + "', " + difficulty + ");";
 
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
 
 }
 
-void SQL::printTestTable() {
-    string sql = "SELECT * FROM 'test';";
+// Prints all data entries from passed in tableName
+void SQL::printTable(string tableName) {
+    string sql = "SELECT * FROM '" +  tableName + "';";
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
+}
+
+// Fetch a a list of data entries from a table
+vector<vector<string> > SQL::fetchTable(string tableName) {
+    string sql = "SELECT * FROM '" +  tableName + "';";
+    // Execute SQL Statement
+    vector<vector<string> > test;
+    return test;
 }
 
 //_easyClass("SOC-A") -> "ECON 003"
@@ -104,4 +115,32 @@ string SQL::getEasiestCourse(string requirementName, int limit) {
     string rating = _getRating(easyClass);
     return "Class: " + easyClass + " Rating: " + rating;
     //Class: ECON003 Rating: 2.3
+}
+
+// Read Data from ucr difficulty database csv
+void SQL::readData(string fileName) {
+    ifstream inFS;
+    string courseName;
+    string difficulty;
+
+    cout << "Opening user database file" << endl;
+    inFS.open(fileName);
+
+    if(!inFS.is_open()) {
+        cout << "Error opening file" << endl;
+        return;
+    }
+
+    while(!inFS.eof())
+    {
+        getline(inFS, courseName, ',');
+        getline(inFS, difficulty, '\n');
+        _insertDifficultyTable(courseName, difficulty);
+    }
+
+    inFS.close();
+
+
+
+
 }
