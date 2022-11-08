@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <string>
 
 #include "../include/SQL.h"
 
@@ -28,6 +30,60 @@ SQL::~SQL() {
     // dealloc private pointer variables
     if (db != nullptr) {free(db);}
     if (zErrMsg != nullptr) {delete zErrMsg;}
+}
+
+// Create a callback function  
+int callback(void *NotUsed, int argc, char **argv, char **azColName){
+
+    // int argc: holds the number of results
+    // (array) azColName: holds each column returned
+    // (array) argv: holds each value
+
+    for(int i = 0; i < argc; i++) {
+        
+        // Show column name, value, and newline
+        cout << azColName[i] << ": " << argv[i] << endl;
+    }
+
+    // Insert a newline
+    cout << endl;
+
+    // Return successful
+    return 0;
+}
+
+//Ill create a separate SQL method called smth like bool userExist() 
+
+// create type of SQL table in database based on passed in tableName
+void SQL::_createTable(string tableName) {
+
+    if (tableName == "test") {
+
+        //SQL language: Create Table with passed in tableName
+        string sql = "CREATE TABLE IF NOT EXISTS test"
+                    "("
+                    "name TEXT PRIMARY KEY NOT NULL,"
+                    "age INT NOT NULL"
+                    ");";
+        
+        // Execute SQL Statement
+         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+    }
+}
+
+void SQL::_insertTestTable(string name, string age) {
+    // Load insert test statement
+    string sql = "INSERT INTO test VALUES('" + name + "', " + age + ");";
+
+    // Execute SQL Statement
+    rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+
+}
+
+void SQL::printTestTable() {
+    string sql = "SELECT * FROM 'test';";
+    // Execute SQL Statement
+    rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
 }
 
 //_easyClass("SOC-A") -> "ECON 003"
