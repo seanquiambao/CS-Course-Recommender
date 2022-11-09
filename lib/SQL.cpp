@@ -29,7 +29,6 @@ SQL::~SQL() {
     sqlite3_close(db);
 
     // dealloc private pointer variables
-    if (db != nullptr) {free(db);}
     if (zErrMsg != nullptr) {zErrMsg = nullptr;}
 
     // dealloc private dataTable 2D vector string pointer
@@ -94,22 +93,19 @@ void SQL::printTable(string tableName) {
 
 // Fetch a a list of data entries from a table
 void SQL::fetchTable(string tableName) {
-    //cout << "INSIDE FETCH FUNCTION" << endl;
-    sqlite3_stmt* t_statement;
-    int *pnRow;
-    int *pnColumn;
-    char* cErrMsg;
-    char ***pazResult;
+    int pnRow;
+    int pnColumn;
+    char *cErrMsg;
+    char **pazResult;
     string sql = "SELECT * FROM '" +  tableName + "';";
-    size_t t_len = strlen(sql.c_str());
 
     //rc = sqlite3_get_table(db, sql.c_str(), t_len, &t_statement, &cErrMsg);
     rc = sqlite3_get_table(
         db,          /* An open database */
         sql.c_str(),     /* SQL to be evaluated */
-        pazResult,    /* Results of the query */
-        pnRow,           /* Number of result rows written here */
-        pnColumn,        /* Number of result columns written here */
+        &pazResult,    /* Results of the query */
+        &pnRow,           /* Number of result rows written here */
+        &pnColumn,        /* Number of result columns written here */
         &cErrMsg       /* Error msg written here */
         );
 
@@ -136,9 +132,9 @@ void SQL::fetchTable(string tableName) {
         string s; s.append(reinterpret_cast<const char*>(db_error_msg));
         cout << "ERROR: " + s << endl;
     } 
-    cout << "Before free ";
-    sqlite3_free_table(*pazResult);
-    cout << "After free " << endl;
+    // cout << "Before free ";
+    // sqlite3_free_table(*pazResult);
+    // cout << "After free " << endl;
 }
 
 //_easyClass("SOC-A") -> "ECON 003"
