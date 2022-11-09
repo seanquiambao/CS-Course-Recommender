@@ -15,11 +15,8 @@ class SQL {
         char *zErrMsg;
         int rc;
  
-        //2D Vector thats stores info for SQL Table Columns (column name, data type, condition)
-        // vector< vector<string> > coursesDifficultyOutline = {
-        //     {"name", "TEXT", "PRIMARY KEY", "NOT NULL"},
-        //     {"difficulty", "INT", "NOT NULL"}
-        // };
+        //2D Vector thats stores results select* 
+        vector< vector<string*> *> *dataTable;
 
         // create type of SQL table in database based on passed in tableName
         void _createTable(string tableName);
@@ -46,7 +43,10 @@ class SQL {
         //getEasiestClass
         string getEasiestCourse(string requirementName, int limit = 3);
 
-        vector<vector<string>> fetchTable(string tableName);
+        void insertDifficultyTable(string name, string dif) {_insertDifficultyTable(name, dif);}
+        void createTable(string tableName) {_createTable(tableName);}
+
+        void fetchTable(string tableName);
         void readData(string);
 };
 
