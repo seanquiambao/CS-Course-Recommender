@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "../include/SQL.h"
 
@@ -29,7 +30,6 @@ SQL::~SQL() {
     sqlite3_close(db);
 
     // dealloc private pointer variables
-    if (db != nullptr) {free(db);}
     if (zErrMsg != nullptr) {delete zErrMsg;}
 }
 
@@ -70,12 +70,30 @@ void SQL::_createTable(string tableName) {
         // Execute SQL Statement
          rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
     }
+    if(tableName == "Breadth Courses") {
+
+        string sql = "CREATE TABLE IF NOT EXISTS '" + tableName + "'"
+                    "("
+                    "name TEXT PRIMARY KEY NOT NULL,"
+                    "units INTEGER NOT NULL," 
+                    "requirements TEXT NOT NULL"
+                    ");";
+
+         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+    }
 }
 
-// Insert entry into 'Course Difficulty' table (coursename, difficulty rating)
-void SQL::_insertDifficultyTable(string name, string difficulty) {
+// Is there a more dynamic way to pass in different # of parameters?
+void SQL::_insertTable(vector<string> columns, string tableName) {
     // Load insert test statement
-    string sql = "INSERT INTO test VALUES('" + name + "', " + difficulty + ");";
+    string sql = "INSERT INTO '" + tableName 
+                + "' VALUES(";
+    
+    for(int i = 0; i < columns.size(); ++i)
+    {
+        if(i == columns.size() - 1) sql += "'" + columns[i] + "');";
+        else sql += "'" + columns[i] + "', ";
+    }
 
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
@@ -87,6 +105,7 @@ void SQL::printTable(string tableName) {
     string sql = "SELECT * FROM '" +  tableName + "';";
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
+    cout << zErrMsg << endl;
 }
 
 // Fetch a a list of data entries from a table
@@ -117,30 +136,33 @@ string SQL::getEasiestCourse(string requirementName, int limit) {
     //Class: ECON003 Rating: 2.3
 }
 
-// Read Data from ucr difficulty database csv
-void SQL::readData(string fileName) {
+// Reading data from CSV file
+void SQL::readData(string fileName, string tableName) {
     ifstream inFS;
-    string courseName;
-    string difficulty;
+    vector<string> dataVector;
+    string data;
+    string line;
+    
 
-    cout << "Opening user database file" << endl;
+    cout << "Opening " + fileName + " file" << endl;
     inFS.open(fileName);
 
     if(!inFS.is_open()) {
         cout << "Error opening file" << endl;
         return;
     }
+    else cout << "Success!" << endl;
 
-    while(!inFS.eof())
+    
+    while(getline(inFS, line)) // Reads every line in CSV file
     {
-        getline(inFS, courseName, ',');
-        getline(inFS, difficulty, '\n');
-        _insertDifficultyTable(courseName, difficulty);
+        stringstream ss (line);
+        while(getline(ss, data, ',')) dataVector.push_back(data); // Reads through the line and pushes data in data vector.
+        _insertTable(dataVector, tableName); // Insert to table
+        dataVector.clear();
     }
 
     inFS.close();
-
-
 
 
 }
