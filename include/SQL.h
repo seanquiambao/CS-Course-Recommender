@@ -17,7 +17,7 @@ class SQL {
         
         void _insertTable(vector<string>, string);
         string _easyClass(string requirementName);
-        string _getRating(string courseName);
+        
 
     public:
 
@@ -28,6 +28,7 @@ class SQL {
         string getEasiestCourse(string requirementName, int limit = 3);
         vector<vector<string>> fetchTable(string tableName);
         void readData(string,string);
+        string _getValue(string,string,string,string);
 };
 
 #endif

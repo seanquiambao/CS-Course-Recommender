@@ -118,11 +118,38 @@ vector<vector<string> > SQL::fetchTable(string tableName) {
 
 //_easyClass("SOC-A") -> "ECON 003"
 string SQL::_easyClass(string requirementName){
-    return "ECON003";
+//    string sql = "SELECT "
+//                + requirementName
+//                + " FROM 'Breadth Courses'"
+    return "ECON 003";
 }
 
-string SQL::_getRating(string courseName) {
-    return "TOP OF LIST";
+string SQL::_getValue(string selectionColumn, string relativeColumn, string find, string tableName) {
+    sqlite3_stmt *selectstmt;
+    string s;
+    string sql = "SELECT " 
+                + selectionColumn
+                + " FROM '"
+                + tableName
+                + "' WHERE "
+                + relativeColumn
+                +" = '" 
+                + find 
+                + "';";
+    rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
+    if(rc != SQLITE_OK) {
+        const char* db_error_msg = sqlite3_errmsg(db);
+        string s; 
+        s.append(reinterpret_cast<const char*>(db_error_msg));
+        cout << "ERROR: " + s << endl;
+    }
+    else {
+        if((sqlite3_step(selectstmt) == SQLITE_ROW)) {
+            s = ((const char*)sqlite3_column_text(selectstmt, 0));
+        }
+    }
+
+    return s;
 }
 
 //create_table("CS100 Class", ["Student Names", "TEXT"], ["SID", "INT"], ["NETID", "TEXT"], ["Year", "INT"])
@@ -131,7 +158,7 @@ string SQL::_getRating(string courseName) {
 //getEasiestClass
 string SQL::getEasiestCourse(string requirementName, int limit) {
     string easyClass = _easyClass(requirementName);
-    string rating = _getRating(easyClass);
+    string rating = _getValue("difficulty", "name", easyClass, "Course Difficulty");
     return "Class: " + easyClass + " Rating: " + rating;
     //Class: ECON003 Rating: 2.3
 }
