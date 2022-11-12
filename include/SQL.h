@@ -15,20 +15,27 @@ class SQL {
         char *zErrMsg;
         int rc;
         
-        void _insertTable(vector<string>, string);
+        
         void _showErrMsg(sqlite3*);
         
 
     public:
 
+        // SQL Functions
         SQL();
         ~SQL();
         void _createTable(string tableName);
+        void _insertTable(vector<string>, string);
         void printTable(string tableName);
-        vector<vector<string>> fetchTable(string tableName);
         void readData(string,string);
+        vector<vector<string>> fetchTable(string tableName);
         string _getValue(string,string,string,string);
+        
+        // Course Recommender Functions
         vector<string> _easyClass(string, int);
+
+        // User Database Functions
+        bool _doesExist(string,string,string);
 };
 
 #endif
