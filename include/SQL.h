@@ -16,7 +16,7 @@ class SQL {
         int rc;
         
         void _insertTable(vector<string>, string);
-        
+        void _showErrMsg(sqlite3*);
         
 
     public:

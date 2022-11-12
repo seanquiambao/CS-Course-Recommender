@@ -8,6 +8,8 @@
 
 using namespace std;
 
+//=========================== GENERAL SQL COMMANDS =========================================
+
 // Constructor
 SQL::SQL(){
 
@@ -115,35 +117,7 @@ vector<vector<string> > SQL::fetchTable(string tableName) {
     return test;
 }
 
-//_easyClass("SOC-A") -> "ECON 003"
-vector<string> SQL::_easyClass(string requirementName, int limit){
-    sqlite3_stmt* selectstmt;
-    vector<string> listOfClasses;
-    string s;
-    string sql = "SELECT 'Course Difficulty'.name FROM 'Course Difficulty' "
-                "INNER JOIN 'Breadth Courses' ON 'Breadth Courses'.name = 'Course Difficulty'.name "
-                "WHERE 'Breadth Courses'.requirements = '" + requirementName 
-                + "' ORDER BY 'Course Difficulty'.difficulty ASC "
-                + "LIMIT "
-                + to_string(limit)
-                + ";"; 
-    
-    rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
-    if(rc != SQLITE_OK) {
-        const char* db_error_msg = sqlite3_errmsg(db);
-        string s; 
-        s.append(reinterpret_cast<const char*>(db_error_msg));
-        cout << "ERROR: " + s << endl;
-    }
-    else {
-        while(sqlite3_step(selectstmt) == SQLITE_ROW)
-        {
-            s = ((const char*)sqlite3_column_text(selectstmt, 0));
-            listOfClasses.push_back(s);
-        }
-    }
-    return listOfClasses;
-}
+
 
 string SQL::_getValue(string selectionColumn, string relativeColumn, string find, string tableName) {
     sqlite3_stmt *selectstmt;
@@ -158,23 +132,11 @@ string SQL::_getValue(string selectionColumn, string relativeColumn, string find
                 + find 
                 + "';";
     rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
-    if(rc != SQLITE_OK) {
-        const char* db_error_msg = sqlite3_errmsg(db);
-        string s; 
-        s.append(reinterpret_cast<const char*>(db_error_msg));
-        cout << "ERROR: " + s << endl;
-    }
-    else {
-        if((sqlite3_step(selectstmt) == SQLITE_ROW)) {
-            s = ((const char*)sqlite3_column_text(selectstmt, 0));
-        }
-    }
-
+    if(rc != SQLITE_OK) _showErrMsg(db);
+    else if((sqlite3_step(selectstmt) == SQLITE_ROW)) s = ((const char*)sqlite3_column_text(selectstmt, 0));
     return s;
 }
 
-//create_table("CS100 Class", ["Student Names", "TEXT"], ["SID", "INT"], ["NETID", "TEXT"], ["Year", "INT"])
-//create_table(string table_name, int numColms, )
 
 // Reading data from CSV file
 void SQL::readData(string fileName, string tableName) {
@@ -183,7 +145,6 @@ void SQL::readData(string fileName, string tableName) {
     string data;
     string line;
     
-
     cout << "Opening " + fileName + " file" << endl;
     inFS.open(fileName);
 
@@ -193,7 +154,6 @@ void SQL::readData(string fileName, string tableName) {
     }
     else cout << "Success!" << endl;
 
-    
     while(getline(inFS, line)) // Reads every line in CSV file
     {
         stringstream ss (line);
@@ -201,8 +161,36 @@ void SQL::readData(string fileName, string tableName) {
         _insertTable(dataVector, tableName); // Insert to table
         dataVector.clear();
     }
-
     inFS.close();
 
-
+}
+void SQL::_showErrMsg(sqlite3* dbError) {
+    const char* db_error_msg = sqlite3_errmsg(dbError);
+    string s; 
+    s.append(reinterpret_cast<const char*>(db_error_msg));
+    cout << "ERROR: " + s << endl;
+}
+//=========================== COURSE RECOMMENDER COMMANDS =========================================
+vector<string> SQL::_easyClass(string requirementName, int limit){
+    sqlite3_stmt* selectstmt;
+    vector<string> listOfClasses;
+    string s;
+    string sql = "SELECT 'Course Difficulty'.name FROM 'Course Difficulty' "
+                "INNER JOIN 'Breadth Courses' ON 'Breadth Courses'.name = 'Course Difficulty'.name "
+                "WHERE 'Breadth Courses'.requirements = '" + requirementName 
+                + "' ORDER BY 'Course Difficulty'.difficulty ASC "
+                + "LIMIT "
+                + to_string(limit)
+                + ";"; 
+    
+    rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
+    if(rc != SQLITE_OK) _showErrMsg(db);
+    else {
+        while(sqlite3_step(selectstmt) == SQLITE_ROW)
+        {
+            s = ((const char*)sqlite3_column_text(selectstmt, 0));
+            listOfClasses.push_back(s);
+        }
+    }
+    return listOfClasses;
 }
