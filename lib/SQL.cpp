@@ -83,7 +83,6 @@ void SQL::_createTable(string tableName) {
     }
 }
 
-// Is there a more dynamic way to pass in different # of parameters?
 void SQL::_insertTable(vector<string> columns, string tableName) {
     // Load insert test statement
     string sql = "INSERT INTO '" + tableName 
@@ -117,11 +116,33 @@ vector<vector<string> > SQL::fetchTable(string tableName) {
 }
 
 //_easyClass("SOC-A") -> "ECON 003"
-string SQL::_easyClass(string requirementName){
-//    string sql = "SELECT "
-//                + requirementName
-//                + " FROM 'Breadth Courses'"
-    return "ECON 003";
+vector<string> SQL::_easyClass(string requirementName, int limit){
+    sqlite3_stmt* selectstmt;
+    vector<string> listOfClasses;
+    string s;
+    string sql = "SELECT 'Course Difficulty'.name FROM 'Course Difficulty' "
+                "INNER JOIN 'Breadth Courses' ON 'Breadth Courses'.name = 'Course Difficulty'.name "
+                "WHERE 'Breadth Courses'.requirements = '" + requirementName 
+                + "' ORDER BY 'Course Difficulty'.difficulty ASC "
+                + "LIMIT "
+                + to_string(limit)
+                + ";"; 
+    
+    rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
+    if(rc != SQLITE_OK) {
+        const char* db_error_msg = sqlite3_errmsg(db);
+        string s; 
+        s.append(reinterpret_cast<const char*>(db_error_msg));
+        cout << "ERROR: " + s << endl;
+    }
+    else {
+        while(sqlite3_step(selectstmt) == SQLITE_ROW)
+        {
+            s = ((const char*)sqlite3_column_text(selectstmt, 0));
+            listOfClasses.push_back(s);
+        }
+    }
+    return listOfClasses;
 }
 
 string SQL::_getValue(string selectionColumn, string relativeColumn, string find, string tableName) {
@@ -154,14 +175,6 @@ string SQL::_getValue(string selectionColumn, string relativeColumn, string find
 
 //create_table("CS100 Class", ["Student Names", "TEXT"], ["SID", "INT"], ["NETID", "TEXT"], ["Year", "INT"])
 //create_table(string table_name, int numColms, )
-
-//getEasiestClass
-string SQL::getEasiestCourse(string requirementName, int limit) {
-    string easyClass = _easyClass(requirementName);
-    string rating = _getValue("difficulty", "name", easyClass, "Course Difficulty");
-    return "Class: " + easyClass + " Rating: " + rating;
-    //Class: ECON003 Rating: 2.3
-}
 
 // Reading data from CSV file
 void SQL::readData(string fileName, string tableName) {

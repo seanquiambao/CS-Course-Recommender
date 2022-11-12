@@ -16,7 +16,7 @@ class SQL {
         int rc;
         
         void _insertTable(vector<string>, string);
-        string _easyClass(string requirementName);
+        
         
 
     public:
@@ -25,10 +25,10 @@ class SQL {
         ~SQL();
         void _createTable(string tableName);
         void printTable(string tableName);
-        string getEasiestCourse(string requirementName, int limit = 3);
         vector<vector<string>> fetchTable(string tableName);
         void readData(string,string);
         string _getValue(string,string,string,string);
+        vector<string> _easyClass(string, int);
 };
 
 #endif

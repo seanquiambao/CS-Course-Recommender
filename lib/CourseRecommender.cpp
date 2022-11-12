@@ -17,13 +17,11 @@ using namespace std;
 //         }
 
 void CourseRecommender::printRec() {
-    for (unsigned i = 0; i < this->requiredBreadth.size(); ++i) {
-        cout << "Easiest " + this->requiredBreadth.at(i) + "Course: " + getEasiestCourse(requiredBreadth.at(i)) << endl;
-    }
+    
 }
 
 void CourseRecommender::printEasiestClasses(string requirementName) {
-    string poop = getEasiestCourse(requirementName);
+    
 }
 
 void CourseRecommender::addRequirement(string requirementName) {
