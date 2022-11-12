@@ -1,7 +1,7 @@
 // CourseRecommender.h
 #include <string>
 #include <vector>
-#include <sqlite3.h> 
+
 
 #include "SQL.h"
 
