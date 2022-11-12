@@ -1,21 +1,15 @@
 #include <iostream>
-<<<<<<< HEAD
 #include <fstream>
 #include <vector>
 #include <string>
 #include <sstream>
-=======
->>>>>>> b2779245b6a4f63fffa91aff0caffff723ae3802
 
 #include "../include/SQL.h"
 
 using namespace std;
 
-<<<<<<< HEAD
 //=========================== GENERAL SQL COMMANDS =========================================
 
-=======
->>>>>>> b2779245b6a4f63fffa91aff0caffff723ae3802
 // Constructor
 SQL::SQL(){
 
@@ -38,7 +32,6 @@ SQL::~SQL() {
     sqlite3_close(db);
 
     // dealloc private pointer variables
-<<<<<<< HEAD
     if (zErrMsg != nullptr) {delete zErrMsg;}
 }
 
@@ -200,28 +193,4 @@ vector<string> SQL::_easyClass(string requirementName, int limit){
         }
     }
     return listOfClasses;
-=======
-    if (db != nullptr) {free(db);}
-    if (zErrMsg != nullptr) {delete zErrMsg;}
-}
-
-//_easyClass("SOC-A") -> "ECON 003"
-string SQL::_easyClass(string requirementName){
-    return "ECON003";
-}
-
-string SQL::_getRating(string courseName) {
-    return "TOP OF LIST";
-}
-
-//create_table("CS100 Class", ["Student Names", "TEXT"], ["SID", "INT"], ["NETID", "TEXT"], ["Year", "INT"])
-//create_table(string table_name, int numColms, )
-
-//getEasiestClass
-string SQL::getEasiestCourse(string requirementName, int limit) {
-    string easyClass = _easyClass(requirementName);
-    string rating = _getRating(easyClass);
-    return "Class: " + easyClass + " Rating: " + rating;
-    //Class: ECON003 Rating: 2.3
->>>>>>> b2779245b6a4f63fffa91aff0caffff723ae3802
 }
