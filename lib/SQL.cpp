@@ -10,6 +10,8 @@ using namespace std;
 // Constructor
 SQL::SQL(){
 
+    //this->dataTable.push_back("test1");
+
     // Attemp to connect to local database
     rc = sqlite3_open("test.db", &db);
 
@@ -55,7 +57,12 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName){
     return 0;
 }
 
-//Ill create a separate SQL method called smth like bool userExist() 
+// Print passed in error message 
+void SQL::printErrMsg(const char* db_error_msg) {
+    string s; 
+    s.append(reinterpret_cast<const char*>(db_error_msg));
+    cout << "ERROR: " + s << endl;
+}
 
 // create type of SQL table in database based on passed in tableName
 void SQL::_createTable(string tableName) {
@@ -82,6 +89,9 @@ void SQL::_insertDifficultyTable(string name, string difficulty) {
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
 
+    //Print Error
+    if (rc != SQLITE_OK) {printErrMsg(sqlite3_errmsg(db));}
+
 }
 
 // Prints all data entries from passed in tableName
@@ -92,14 +102,12 @@ void SQL::printTable(string tableName) {
 }
 
 // Fetch a a list of data entries from a table
-void SQL::fetchTable(string tableName) {
+void SQL::fetchSQL(string sql) {
     int pnRow;
     int pnColumn;
     char *cErrMsg;
     char **pazResult;
-    string sql = "SELECT * FROM '" +  tableName + "';";
 
-    //rc = sqlite3_get_table(db, sql.c_str(), t_len, &t_statement, &cErrMsg);
     rc = sqlite3_get_table(
         db,          /* An open database */
         sql.c_str(),     /* SQL to be evaluated */
@@ -109,32 +117,8 @@ void SQL::fetchTable(string tableName) {
         &cErrMsg       /* Error msg written here */
         );
 
-    if (rc == SQLITE_OK)
-    {
-        cout << "column names: " << pazResult[0][1] << endl;
-        // rc = sqlite3_step(t_statement);
-        // while (rc == SQLITE_ROW)
-        // {
-        //     // iterate over the columns to get the data
-        //     for (unsigned columnIndex = 0; columnIndex < 2; ++columnIndex) {
-        //         const unsigned char* t_value = sqlite3_column_text(t_statement, columnIndex);
-        //     }
-        //     // string s; s.append(reinterpret_cast<const char*>(t_value));
-        //     // cout << s << " ALJSHFKASH ";
-        //     rc = sqlite3_step(t_statement);
-        // }
-    }
-    else
-    {
-        // zErrMsg may have an error message. If not, the database object
-        // may have one. Either way, you can find out what went wrong.
-        const char* db_error_msg = sqlite3_errmsg(db);
-        string s; s.append(reinterpret_cast<const char*>(db_error_msg));
-        cout << "ERROR: " + s << endl;
-    } 
-    // cout << "Before free ";
-    // sqlite3_free_table(*pazResult);
-    // cout << "After free " << endl;
+    if (rc == SQLITE_OK){dataTable = new DataTable(pazResult, pnColumn, pnRow);}
+    else {printErrMsg(sqlite3_errmsg(db));} 
 }
 
 //_easyClass("SOC-A") -> "ECON 003"
