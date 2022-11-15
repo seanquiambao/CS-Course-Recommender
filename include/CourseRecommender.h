@@ -14,8 +14,9 @@ class CourseRecommender : public SQL {
         vector<string> requiredBreadth;
     public:
         void printRec();
-        void printEasiestClasses(string requirementName);
+        void printEasiestClasses();
         void addRequirement(string requirementName);
+        void removeRequirement(string requirementName);
 };
 
 #endif
