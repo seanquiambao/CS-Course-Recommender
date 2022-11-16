@@ -54,7 +54,6 @@
  > * Using the query results, we can select the data we want to return to the user using getData(). 
  > * isEmpty() checks whether the query result returns an empty table. 
  > * printTable() is prints the table of the query results. It is mostly used for debugging purposes.
- ### Second UML Diagram
 
 
  
