@@ -15,7 +15,6 @@
  > * **C++** - A programming language used to code our project.
  > * **GDB (GNU Debugger)** - A dynamic debugger tool used to identify issues within our program. This is used to detect bugs in our C++ code.
  > * **Valgrind** - An instrumentation framework used to check for memory management and threading bugs. This is used to detect memory leaks and dangling pointers within our program.
- > * **LibXL** - A C++ Excel Library for reading/writing data from an excel file (Google Sheets UCR Difficulty Database will be exported into an excel file). This will be used to read input given by the user, which will be discussed in a later segment.
  > * **SQL & SQLite3** - SQL is a standard language responsible for accessing and manipulating database. We will use SQLite3 to write C++ to execute SQL commands to communicate the database.
 ### Input/Output
  > **Input** - The user can input the courses they have already taken, this can be inputted through either a .txt file or an Excel file. This input will be used to calculate the amount of credits taken, which can be used to calculate the amount of credits required. This will also be used as a prerequisite checklist for specific computer science courses. The user can also input classes into their planner, if they meet the required prerequisite.<br>
@@ -24,19 +23,39 @@
  > * The user can create a planner for each quarter. The user is allowed to add or remove courses from the planner. When adding courses, the program will sum up all the units. The program will also show the average difficulty so that the user can see the amount of workload they have. This average difficulty is calculated based on the UCR difficulty database. This program can also calculate the expected graduation date.
  > * The user can search up the courses. The search bar will be divided whether the course is a lower division course, upper division course, or elective course. The program will also show some breadth courses for each area of study (we will focus on the three most popular breadth courses for each area of study). The user can select a course in the view finder, which will display the courses prerequisite, amount of units, and difficulty.
 
-## Class Diagrams
-### First UML Diagram
-![UML Diagram of SQL class and Course Recommender Class](https://github.com/cs100/final-project-squia003-zta002-jpasc029-nchan089/blob/master/images/classDiagram.png)
-
- > This first class diagram includes the structure of the program. The SQL class will use a sqlite3 header file to call certain SQL functions such as reading off UCR difficulty database, or creating tables for each classes. 
- > * The SQL class will have a int rc variable that will determine whether the database can be opened or not. SQL class will hold an SQL object (db *sqlite3) that will provide commands for the SQL language.
- 
- > * The SQL() function will first open up the database file and check whether the file has sucessfully opened. It will then read off the file and execute SQL commands to construct tables for each UCR classes. ~SQL() destructor will deallocate any memory used up in the program. callBack() function essentially acts as a helper function that retrieves data from the database. insert_into() functions adds UCR classes in to the SQL tables.
- > * In the Course Recommender class it will hold a list of strings that will hold the breadth requirements the students need to satisfy. Add requirements prompts the user to add requirements they need ot complete. The printEasiest functions will print a list of 3 easiest classes for each breadth requirements. 
+## Class Diagrams (First Sprint)
+![UML Class Diagram](https://github.com/cs100/final-project-squia003-zta002-jpasc029-nchan089/blob/master/images/firstSprintUMLDiagram.png)
+### SQL Class
+ > SQL class is instantiated as a pointer object. This class is responsible for creating tables, inserting/reading data, and fetching query results of the SQL commands. 
+ > * db is a sqlite3 pointer responsible for handling certain sqlite3 commands.
+ > * zErrMsg stores the error message whenever db encounters any errors querying the SQL commands.
+ > * rc essentially stores query results (returns an error code if db encounters an error).
+ > * _createTable() creates a table using the CREATE SQL command and executing the instruction using rc and sqlite_exec function 
+ > * readData() reads data from the two CSV files, which uses. It uses a the file stream library to read the CSV files.
+ > * _insertTable takes in a vector of strings (data for each column in the table), and a string variable (tableName) and inserts each data into the table.
+ > * _showErrMsg outputs an errMsg whenever the sqlite3 encounters an error. 
+ > * _getValue() is a function that returns the data from the table in the database. IT takes in four strings, one selection column, one comparison column, the data to search in the comparison column, and the table name.
+ > * _easyClass() is a function that returns a vector of strings (class names) according to the user's breadth requirements. It should take in the requirementName (eg. HUM-B, SS-A), and the tableName.
+### Course Recommender and LoginPrompt
+ > Both CourseRecommender and LoginPrompt uses the SQL class to execute certain SQL commands. Both of their relationships are aggregation because they can stand alone whenever SQL pointer class is deleted (though they render useless). The two classes also uses the DataTable class to retrieve query results. We will discuss about the DataTable class later.
+#### Course Recommender
+ > Course Recommender stores a vector of strings that stores the user's breadth requirements. 
+ > * printEasiestClass() will output the top three easiest classes for each breadth requirements stored. The addRequirement function requests user input to add a breadth requirement. printHardestClass() lists the hardest class instead of the easiest. They are functionally the same.
+ > * addRequirement() requires the user's input to add any breadth requirements (e.g. HUM-B, SS-A...)
+ #### LoginSystem
+ > loginSystem is responsible for handling user database.
+ > * It will execute the loginPrompt() to ask for user input. 
+ > * If the username is not in the dataase the program will ask the user to register and execute  registerUser() if they agree. 
+ > * It uses the isRegistered() function to check if the user is already added the database.
+ > * If the user does exist in the database, the user can input a password. The program uses isUser() to check if the user's password is typed in correctly.
+ ### DataTable Struct
+ > As previously mentioned, DataTable is a struct class that fetches query results based on the Course Difficulty Database. It's relation to the SQL class is composition, because if SQL is deleted, DataTable's query results will also be deleted. 
+ > * When the SQL class executes fetchData(), the DataTable class will fetch the results of the SQL query command.
+ > * Using the query results, we can select the data we want to return to the user using getData(). 
+ > * isEmpty() checks whether the query result returns an empty table. 
+ > * printTable() is prints the table of the query results. It is mostly used for debugging purposes.
  ### Second UML Diagram
-![UML Diagram with additional planer Class](https://github.com/cs100/final-project-squia003-zta002-jpasc029-nchan089/blob/master/images/classDiagramPlan.png)
- > The second class diagram has the same structure as the first UML class diagram, however there is an additional class for the planner section. 
- > * The planner will essentially take a list of strings of each classes the user has added. The getAverage will return the average of the difficulty of all of the user classes. Determine difficulty will return a string that states whether the planned quarter is either easy, decent, or hard (based on the average difficulty). The planner will also call the printPlanner() function to print the list of classes and their associated difficulty.
+
 
  
  > ## Phase III
