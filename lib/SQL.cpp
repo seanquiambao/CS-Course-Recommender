@@ -23,6 +23,14 @@ SQL::SQL(){
     } else {
         fprintf(stderr, "Opened database successfully\n");
     }
+
+    // Create Tables
+    _createTable("Course Difficulty");
+    _createTable("Breadth Courses");
+
+    // Populate Tables from csv files in db directory
+    _readData("../db/difficultyDatabase.csv", coursesDifficulty);
+    _readData("../db/breadthCourses.csv", coursesBreadth);
 }
 
 // Destructor
@@ -55,50 +63,79 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName){
     return 0;
 }
 
-//Ill create a separate SQL method called smth like bool userExist() 
-
 // create type of SQL table in database based on passed in tableName
 void SQL::_createTable(string tableName) {
 
-    if (tableName == "Course Difficulty") {
+    if (tableName == coursesDifficulty.at(0)) {
 
         //SQL language: Create Table with passed in tableName
-        string sql = "CREATE TABLE IF NOT EXISTS 'Course Difficulty'"
+        string sql = "CREATE TABLE IF NOT EXISTS '" + coursesDifficulty.at(0) + "'"
                     "("
-                    "name TEXT PRIMARY KEY NOT NULL,"
-                    "difficulty REAL NOT NULL"
-                    ");";
+                    + coursesDifficulty.at(1) + " TEXT NOT NULL,"
+                    + coursesDifficulty.at(2) + " REAL NOT NULL,"
+                    "UNIQUE(";
+                    for (unsigned i = 1; i < coursesDifficulty.size(); ++i) {
+                        sql += coursesDifficulty.at(i);
+                        if (i < coursesDifficulty.size() - 1) sql += ", ";
+                        else sql += "));";
+                    }
         
         // Execute SQL Statement
          rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+         if (rc != SQLITE_OK) _showErrMsg(db);
+         
     }
-    if(tableName == "Breadth Courses") {
+    if(tableName == coursesBreadth.at(0)) {
 
-        string sql = "CREATE TABLE IF NOT EXISTS '" + tableName + "'"
+        string sql = "CREATE TABLE IF NOT EXISTS '" + coursesBreadth.at(0) + "'"
                     "("
-                    "name TEXT PRIMARY KEY NOT NULL,"
-                    "units INTEGER NOT NULL," 
-                    "requirements TEXT NOT NULL"
-                    ");";
+                    + coursesBreadth.at(1) + " TEXT NOT NULL,"
+                    + coursesBreadth.at(2) + " INTEGER NOT NULL," 
+                    + coursesBreadth.at(3) + " TEXT NOT NULL,"
+                    "UNIQUE(";
+                    for (unsigned i = 1; i < coursesBreadth.size(); ++i) {
+                        sql += coursesBreadth.at(i);
+                        if (i < coursesBreadth.size() - 1) sql += ", ";
+                        else sql += "));";
+                    }
 
-         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+        rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
     }
 }
 
-void SQL::_insertTable(vector<string> columns, string tableName) {
+void SQL::_insertTable(vector<string> columns, vector<string> tableName) {
     // Load insert test statement
-    string sql = "INSERT INTO '" + tableName 
-                + "' VALUES(";
+    string sql = "INSERT INTO '" + tableName.at(0)
+               + "' VALUES(";
     
     for(int i = 0; i < columns.size(); ++i)
     {
         if(i == columns.size() - 1) sql += "'" + columns[i] + "');";
         else sql += "'" + columns[i] + "', ";
     }
-
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
 
+}
+
+// Fetch a queried data and stores into DataTable struct
+void SQL::_fetchSQL(string sql) {
+    int pnRow;
+    int pnColumn;
+    char *cErrMsg;
+    char **pazResult;
+
+    rc = sqlite3_get_table(
+        db,          /* An open database */
+        sql.c_str(),     /* SQL to be evaluated */
+        &pazResult,    /* Results of the query */
+        &pnRow,           /* Number of result rows written here */
+        &pnColumn,        /* Number of result columns written here */
+        &cErrMsg       /* Error msg written here */
+        );
+
+    if (rc == SQLITE_OK){dataTable = new DataTable(pazResult, pnColumn, pnRow);}
+    else {_showErrMsg(db);} 
 }
 
 // Prints all data entries from passed in tableName
@@ -110,36 +147,14 @@ void SQL::printTable(string tableName) {
 }
 
 // Fetch a a list of data entries from a table
-vector<vector<string> > SQL::fetchTable(string tableName) {
+void SQL::fetchTable(string tableName) {
     string sql = "SELECT * FROM '" +  tableName + "';";
-    // Execute SQL Statement
-    vector<vector<string> > test;
-    return test;
+    // Execute SQL Statement and store into DataTable struct
+    _fetchSQL(sql);
 }
-
-
-
-string SQL::_getValue(string selectionColumn, string relativeColumn, string find, string tableName) {
-    sqlite3_stmt *selectstmt;
-    string s;
-    string sql = "SELECT " 
-                + selectionColumn
-                + " FROM '"
-                + tableName
-                + "' WHERE "
-                + relativeColumn
-                +" = '" 
-                + find 
-                + "';";
-    rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
-    if(rc != SQLITE_OK) _showErrMsg(db);
-    else if((sqlite3_step(selectstmt) == SQLITE_ROW)) s = ((const char*)sqlite3_column_text(selectstmt, 0));
-    return s;
-}
-
 
 // Reading data from CSV file
-void SQL::readData(string fileName, string tableName) {
+void SQL::_readData(string fileName, vector<string> tableName) {
     ifstream inFS;
     vector<string> dataVector;
     string data;
@@ -171,10 +186,7 @@ void SQL::_showErrMsg(sqlite3* dbError) {
     cout << "ERROR: " + s << endl;
 }
 //=========================== COURSE RECOMMENDER COMMANDS =========================================
-vector<string> SQL::_easyClass(string requirementName, int limit){
-    sqlite3_stmt* selectstmt;
-    vector<string> listOfClasses;
-    string s;
+void SQL::easyClass(string requirementName, int limit){
     string sql = "SELECT 'Course Difficulty'.name FROM 'Course Difficulty' "
                 "INNER JOIN 'Breadth Courses' ON 'Breadth Courses'.name = 'Course Difficulty'.name "
                 "WHERE 'Breadth Courses'.requirements = '" + requirementName 
@@ -182,15 +194,33 @@ vector<string> SQL::_easyClass(string requirementName, int limit){
                 + "LIMIT "
                 + to_string(limit)
                 + ";"; 
-    
+    _fetchSQL(sql);
+}
+
+//=========================== LOGIN SYSTEM COMMANDS =========================================
+bool SQL::_doesExist(string given, string column, string tableName) {
+    sqlite3_stmt *selectstmt;
+    const char* cErrMsg;
+    bool existence = false;
+    string sql = "SELECT * FROM '"
+                + tableName
+                + "' WHERE "
+                + column
+                + " = '"
+                + given
+                + "';";
+
     rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
-    if(rc != SQLITE_OK) _showErrMsg(db);
-    else {
-        while(sqlite3_step(selectstmt) == SQLITE_ROW)
-        {
-            s = ((const char*)sqlite3_column_text(selectstmt, 0));
-            listOfClasses.push_back(s);
-        }
+    
+    if(rc == SQLITE_OK) {
+        if(sqlite3_step(selectstmt) == SQLITE_ROW) existence = true;
     }
-    return listOfClasses;
+    else {
+        const char* db_error_msg = sqlite3_errmsg(db);
+        string s; 
+        s.append(reinterpret_cast<const char*>(db_error_msg));
+        cout << "ERROR: " + s << endl;
+    }
+    sqlite3_finalize(selectstmt);
+    return existence;
 }

@@ -3,6 +3,7 @@
 
 #include "../include/CourseRecommender.h"
 #include "../include/SQL.h"
+#include "../include/loginSystem.h"
 using namespace std;
 
 int main() {
@@ -30,5 +31,6 @@ int main() {
     //     cout << database->_getValue("difficulty", "name", classes[i], "Course Difficulty") << " ";
     // }
 
+    
     return 0;
 }
