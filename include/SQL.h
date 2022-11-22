@@ -1,6 +1,10 @@
 // SQL.h
 #include <string>
+#include <vector>
 #include <sqlite3.h> 
+
+#include "DataTable.h"
+//#include "../third-party-sqlite/src/sqlite3.h"
 
 using namespace std;
 
@@ -14,21 +18,30 @@ class SQL {
         char *zErrMsg;
         int rc;
 
-        //_easyClass("SOC-A") -> "ECON 003"
-        string _easyClass(string requirementName);
+        // Table vectors {"TableName", "ColA", "ColB", ... }
+        vector<string> coursesDifficulty {"Course Difficulty", "name", "difficulty"};
+        vector<string> coursesBreadth {"Breadth Courses", "name", "units", "requirements"};
+        
+        void _insertTable(vector<string>, vector<string>);
+        void _showErrMsg(sqlite3*);
+        void _createTable(string tableName);
+        void _readData(string,vector<string>);
 
-        string _getRating(string courseName);
+        // Populates DataTable class with data fetched from passed in SQL Queries
+        void _fetchSQL(string);
+        
 
     public:
 
-        // Constructor
         SQL();
-
-        // Destructor
         ~SQL();
 
-        //getEasiestClass
-        string getEasiestCourse(string requirementName, int limit = 3);
+        //2D Vector thats stores results select* 
+        DataTable *dataTable;
+
+        void printTable(string tableName);
+        void fetchTable(string tableName);
+        void easyClass(string, int);
 };
 
 #endif
