@@ -83,6 +83,18 @@ void SQL::_createTable(string tableName) {
 
          rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
     }
+    if(tableName == "User Database") {
+        //SQL language: Create Table with passed in tableName
+        string sql = "CREATE TABLE IF NOT EXISTS 'User Database'"
+                    "("
+                    "username TEXT PRIMARY KEY NOT NULL,"
+                    "password TEXT NOT NULL"
+                    ");";
+        
+        // Execute SQL Statement
+         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+         if(rc != SQLITE_OK) cout << "Error: " << zErrMsg << endl;
+    }
 }
 
 void SQL::_insertTable(vector<string> columns, string tableName) {
@@ -193,4 +205,32 @@ vector<string> SQL::_easyClass(string requirementName, int limit){
         }
     }
     return listOfClasses;
+}
+
+//=========================== LOGIN SYSTEM COMMANDS =========================================
+bool SQL::_doesExist(string given, string column, string tableName) {
+    sqlite3_stmt *selectstmt;
+    const char* cErrMsg;
+    bool existence = false;
+    string sql = "SELECT * FROM '"
+                + tableName
+                + "' WHERE "
+                + column
+                + " = '"
+                + given
+                + "';";
+
+    rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
+    
+    if(rc == SQLITE_OK) {
+        if(sqlite3_step(selectstmt) == SQLITE_ROW) existence = true;
+    }
+    else {
+        const char* db_error_msg = sqlite3_errmsg(db);
+        string s; 
+        s.append(reinterpret_cast<const char*>(db_error_msg));
+        cout << "ERROR: " + s << endl;
+    }
+    sqlite3_finalize(selectstmt);
+    return existence;
 }
