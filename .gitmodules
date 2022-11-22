@@ -1,0 +1,3 @@
+[submodule "third-party-sqlite"]
+	path = third-party-sqlite
+	url = https://github.com/osquery/third-party-sqlite.git

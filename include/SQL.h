@@ -1,6 +1,7 @@
 // SQL.h
 #include <string>
-#include <sqlite3.h> 
+#include <vector>
+#include "../third-party-sqlite/src/sqlite3.h"
 
 using namespace std;
 
@@ -13,22 +14,21 @@ class SQL {
         sqlite3 *db;
         char *zErrMsg;
         int rc;
-
-        //_easyClass("SOC-A") -> "ECON 003"
-        string _easyClass(string requirementName);
-
-        string _getRating(string courseName);
+        
+        void _insertTable(vector<string>, string);
+        void _showErrMsg(sqlite3*);
+        
 
     public:
 
-        // Constructor
         SQL();
-
-        // Destructor
         ~SQL();
-
-        //getEasiestClass
-        string getEasiestCourse(string requirementName, int limit = 3);
+        void _createTable(string tableName);
+        void printTable(string tableName);
+        vector<vector<string>> fetchTable(string tableName);
+        void readData(string,string);
+        string _getValue(string,string,string,string);
+        vector<string> _easyClass(string, int);
 };
 
 #endif
