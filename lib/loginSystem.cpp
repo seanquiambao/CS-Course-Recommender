@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void loginSystem::loginPrompt(SQL* database) {
+string loginSystem::loginPrompt(SQL* database) {
     string username;
     string password;
     
@@ -23,7 +23,7 @@ void loginSystem::loginPrompt(SQL* database) {
 
         cin >> choice;
         tolower(choice);
-        if(choice != 'y') return;
+        if(choice != 'y') return "";
         cin.ignore();
         
 
@@ -59,6 +59,7 @@ void loginSystem::loginPrompt(SQL* database) {
     }
 
     cout << "Sucess! Loading data..." << endl;
+    return username;
 
     
 }
@@ -68,6 +69,7 @@ void loginSystem::registerUser(string userName, string password, SQL* database) 
     columns.push_back(userName);
     columns.push_back(password);
     database->insertTable(columns, "User Database");
+    database->createUserTable(userName);
 }
 bool loginSystem::isRegistered(string username, SQL* database) {
     return database->doesExist(username, "username", "User Database");
@@ -76,8 +78,4 @@ bool loginSystem::isUser(string username, string password, SQL* database) {
     database->getValue("password", "username", username, "User Database");
     if(password == database->dataTable->getData(1, 1)) return true;
     return false;
-}
-
-void loginSystem::loadData(string file) {
-    // SQL Code
 }

@@ -10,12 +10,10 @@ int main() {
     SQL * database = new SQL();
     loginSystem login;
     CourseRecommender* courseR = new CourseRecommender();
+    string user = login.loginPrompt(database);
+    
 
-    courseR->addRequirement("HUM-A");
-    courseR->addRequirement("HUM-B");
-    courseR->printRec(database);
 
-    login.loginPrompt(database);
 
     return 0;
 }
