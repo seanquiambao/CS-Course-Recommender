@@ -161,6 +161,7 @@ void SQL::fetchTable(string tableName) {
 
 // Reading data from CSV file
 void SQL::_readData(string fileName, string tableName) {
+
     ifstream inFS;
     vector<string> dataVector;
     string data;

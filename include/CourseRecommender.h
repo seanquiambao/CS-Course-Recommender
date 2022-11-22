@@ -1,7 +1,6 @@
 // CourseRecommender.h
 #include <string>
 #include <vector>
-#include <sqlite3.h> 
 
 #include "SQL.h"
 
@@ -14,9 +13,11 @@ class CourseRecommender : public SQL {
     private:
         vector<string> requiredBreadth;
     public:
+        CourseRecommender();
         void printRec();
-        void printEasiestClasses(string requirementName);
+        void printEasiestClasses();
         void addRequirement(string requirementName);
+        void removeRequirement(string requirementName);
 };
 
 #endif

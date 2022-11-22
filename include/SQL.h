@@ -1,10 +1,9 @@
 // SQL.h
 #include <string>
 #include <vector>
-#include <sqlite3.h>
+#include "../third-party-sqlite/src/sqlite3.h"
 
 #include "DataTable.h"
-//#include "../third-party-sqlite/src/sqlite3.h"
 
 using namespace std;
 
