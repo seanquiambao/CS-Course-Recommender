@@ -9,13 +9,12 @@ using namespace std;
 #ifndef __COURSERECOMMENDER_H__
 #define __COURSERECOMMENDER_H__
 
-class CourseRecommender : public SQL {
+class CourseRecommender {
     private:
         vector<string> requiredBreadth;
     public:
-        CourseRecommender();
-        void printRec();
-        void printEasiestClasses();
+        void printRec(SQL*); // Loop through required breadth vector, each elements calls print easiest class.
+        void printEasiestClasses(SQL*, string);
         void addRequirement(string requirementName);
         void removeRequirement(string requirementName);
 };

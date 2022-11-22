@@ -73,7 +73,7 @@ void SQL::_createTable(string tableName) {
         string sql = "CREATE TABLE IF NOT EXISTS 'Course Difficulty'"
                     "("
                     "name TEXT NOT NULL,"
-                    "difficukty REAL NOT NULL,"
+                    "difficulty REAL NOT NULL,"
                     "UNIQUE(name, difficulty)"
                     ");";
 
@@ -194,7 +194,7 @@ void SQL::_showErrMsg(sqlite3* dbError) {
 }
 //=========================== COURSE RECOMMENDER COMMANDS =========================================
 void SQL::easyClass(string requirementName, int limit){
-    string sql = "SELECT 'Course Difficulty'.name FROM 'Course Difficulty' "
+    string sql = "SELECT 'Course Difficulty'.name, 'Course Difficulty'.difficulty FROM 'Course Difficulty' "
                 "INNER JOIN 'Breadth Courses' ON 'Breadth Courses'.name = 'Course Difficulty'.name "
                 "WHERE 'Breadth Courses'.requirements = '" + requirementName 
                 + "' ORDER BY 'Course Difficulty'.difficulty ASC "

@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <cstring>
 #include "../include/DataTable.h"
 
 using namespace std;
