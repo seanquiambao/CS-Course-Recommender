@@ -9,12 +9,11 @@ using namespace std;
 int main() {
     SQL * database = new SQL();
     loginSystem login;
+
     CourseRecommender* courseR = new CourseRecommender();
     courseR->printEasiestClasses();
-    database->_createTable("User Database");
     
     login.loginPrompt(database);
 
-    
     return 0;
 }

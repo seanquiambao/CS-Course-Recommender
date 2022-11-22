@@ -4,7 +4,6 @@
 #include "../third-party-sqlite/src/sqlite3.h"
 
 #include "DataTable.h"
-//#include "../third-party-sqlite/src/sqlite3.h"
 
 using namespace std;
 
@@ -18,18 +17,12 @@ class SQL {
         char *zErrMsg;
         int rc;
 
-        // Table vectors {"TableName", "ColA", "ColB", ... }
-        vector<string> coursesDifficulty {"Course Difficulty", "name", "difficulty"};
-        vector<string> coursesBreadth {"Breadth Courses", "name", "units", "requirements"};
-        
-        void _insertTable(vector<string>, vector<string>);
         void _showErrMsg(sqlite3*);
         void _createTable(string tableName);
-        void _readData(string,vector<string>);
+        void _readData(string,string);
 
         // Populates DataTable class with data fetched from passed in SQL Queries
         void _fetchSQL(string);
-        
 
     public:
 
@@ -45,7 +38,9 @@ class SQL {
         void easyClass(string, int);
 
         // User Database Functions
-        bool _doesExist(string,string,string);
+        bool doesExist(string,string,string);
+        void insertTable(vector<string>, string);
+        void getValue(string, string, string, string);
 };
 
 #endif

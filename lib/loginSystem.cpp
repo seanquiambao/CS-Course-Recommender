@@ -67,14 +67,14 @@ void loginSystem::registerUser(string userName, string password, SQL* database) 
     vector<string> columns;
     columns.push_back(userName);
     columns.push_back(password);
-    database->_insertTable(columns, "User Database");
+    database->insertTable(columns, "User Database");
 }
 bool loginSystem::isRegistered(string username, SQL* database) {
-    return database->_doesExist(username, "username", "User Database");
+    return database->doesExist(username, "username", "User Database");
 }
 bool loginSystem::isUser(string username, string password, SQL* database) {
-    string actualPassword = database->_getValue("password", "username", username, "User Database");
-    if(password == actualPassword) return true;
+    database->getValue("password", "username", username, "User Database");
+    if(password == database->dataTable->getData(1, 1)) return true;
     return false;
 }
 
