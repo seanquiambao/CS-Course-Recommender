@@ -15,8 +15,9 @@ class CourseRecommender : public SQL {
     public:
         CourseRecommender();
         void printRec();
-        void printEasiestClasses(string requirementName);
+        void printEasiestClasses();
         void addRequirement(string requirementName);
+        void removeRequirement(string requirementName);
 };
 
 #endif
