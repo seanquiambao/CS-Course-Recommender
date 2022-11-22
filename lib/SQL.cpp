@@ -80,7 +80,6 @@ void SQL::_createTable(string tableName) {
                         else sql += "));";
                     }
         
-        cout << "SQL:" << sql << endl;
         // Execute SQL Statement
          rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
          if (rc != SQLITE_OK) _showErrMsg(db);
@@ -100,7 +99,6 @@ void SQL::_createTable(string tableName) {
                         else sql += "));";
                     }
 
-        cout << "SQL:" << sql << endl;
         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
     }
 }
@@ -120,7 +118,7 @@ void SQL::_insertTable(vector<string> columns, vector<string> tableName) {
 
 }
 
-// Fetch a a list of data entries from a table
+// Fetch a queried data and stores into DataTable struct
 void SQL::_fetchSQL(string sql) {
     int pnRow;
     int pnColumn;
@@ -189,9 +187,6 @@ void SQL::_showErrMsg(sqlite3* dbError) {
 }
 //=========================== COURSE RECOMMENDER COMMANDS =========================================
 void SQL::easyClass(string requirementName, int limit){
-    sqlite3_stmt* selectstmt;
-    vector<string> listOfClasses;
-    string s;
     string sql = "SELECT 'Course Difficulty'.name FROM 'Course Difficulty' "
                 "INNER JOIN 'Breadth Courses' ON 'Breadth Courses'.name = 'Course Difficulty'.name "
                 "WHERE 'Breadth Courses'.requirements = '" + requirementName 
@@ -200,4 +195,32 @@ void SQL::easyClass(string requirementName, int limit){
                 + to_string(limit)
                 + ";"; 
     _fetchSQL(sql);
+}
+
+//=========================== LOGIN SYSTEM COMMANDS =========================================
+bool SQL::_doesExist(string given, string column, string tableName) {
+    sqlite3_stmt *selectstmt;
+    const char* cErrMsg;
+    bool existence = false;
+    string sql = "SELECT * FROM '"
+                + tableName
+                + "' WHERE "
+                + column
+                + " = '"
+                + given
+                + "';";
+
+    rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &selectstmt, NULL);
+    
+    if(rc == SQLITE_OK) {
+        if(sqlite3_step(selectstmt) == SQLITE_ROW) existence = true;
+    }
+    else {
+        const char* db_error_msg = sqlite3_errmsg(db);
+        string s; 
+        s.append(reinterpret_cast<const char*>(db_error_msg));
+        cout << "ERROR: " + s << endl;
+    }
+    sqlite3_finalize(selectstmt);
+    return existence;
 }

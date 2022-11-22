@@ -1,7 +1,7 @@
 // SQL.h
 #include <string>
 #include <vector>
-#include <sqlite3.h> 
+#include "../third-party-sqlite/src/sqlite3.h"
 
 #include "DataTable.h"
 //#include "../third-party-sqlite/src/sqlite3.h"
@@ -39,9 +39,13 @@ class SQL {
         //2D Vector thats stores results select* 
         DataTable *dataTable;
 
+        // Course Recommender Functions
         void printTable(string tableName);
         void fetchTable(string tableName);
         void easyClass(string, int);
+
+        // User Database Functions
+        bool _doesExist(string,string,string);
 };
 
 #endif
