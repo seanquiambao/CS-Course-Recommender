@@ -1,14 +1,15 @@
 #include <iostream>
-
-#include "../include/CourseRecommender.h"
+#include <string>
+//#include "../include/CourseRecommender.h"
+#include "../include/SQL.h"
+#include "../include/loginSystem.h"
 using namespace std;
 
 int main() {
-    CourseRecommender advisor;
-    cout << "Compiled YES" << endl;
-    // advisor.addRequirement("SOC-A");
-    // advisor.addRequirement("SOC-B");
-    // advisor.addRequirement("HUM-B");
-    // advisor.printRec();
+    SQL * database = new SQL();
+    loginSystem login;
 
+    login.loginPrompt(database);
+    
+    return 0;
 }
