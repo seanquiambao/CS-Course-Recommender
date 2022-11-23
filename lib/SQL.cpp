@@ -25,13 +25,16 @@ SQL::SQL(){
     }
 
     // Create Tables
+    cout << "Creating Tables" << endl;
     _createTable("Course Difficulty");
+    _createTable("Computer Science Courses");
     _createTable("Breadth Courses");
     _createTable("User Database");
 
     // Populate Tables from csv files in db directory
     _readData("../db/difficultyDatabase.csv", "Course Difficulty");
     _readData("../db/breadthCourses.csv", "Breadth Courses");
+    _readData("../db/computerScienceClasses.csv", "Computer Science Courses");
 }
 
 // Destructor
@@ -106,6 +109,19 @@ void SQL::_createTable(string tableName) {
         // Execute SQL Statement
          rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
          if(rc != SQLITE_OK) cout << "Error: " << zErrMsg << endl;
+    }
+    if(tableName == "Computer Science Courses") {
+        string sql = "CREATE TABLE IF NOT EXISTS 'Computer Science Courses'"
+                    "("
+                    "name TEXT NOT NULL,"
+                    "units INTEGER NOT NULL,"
+                    "requirements TEXT NOT NULL,"
+                    "UNIQUE(name, units, requirements)"
+                    ");";
+
+         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+         if(rc != SQLITE_OK) cout << "Error: " << zErrMsg << endl;
+            
     }
 }
 
@@ -217,10 +233,16 @@ void SQL::_showErrMsg(sqlite3* dbError) {
     cout << "ERROR: " + s << endl;
 }
 //=========================== COURSE RECOMMENDER COMMANDS =========================================
-void SQL::easyClass(string requirementName, int limit){
+void SQL::easyClass(string requirementName, int limit, string tableName){
     string sql = "SELECT 'Course Difficulty'.name, 'Course Difficulty'.difficulty FROM 'Course Difficulty' "
-                "INNER JOIN 'Breadth Courses' ON 'Breadth Courses'.name = 'Course Difficulty'.name "
-                "WHERE 'Breadth Courses'.requirements = '" + requirementName 
+                "INNER JOIN '"
+                + tableName
+                + "' ON '"
+                + tableName 
+                + "'.name = 'Course Difficulty'.name "
+                + "WHERE '"
+                + tableName
+                +"'.requirements = '" + requirementName 
                 + "' ORDER BY 'Course Difficulty'.difficulty ASC "
                 + "LIMIT "
                 + to_string(limit)
