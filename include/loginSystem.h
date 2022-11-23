@@ -11,10 +11,10 @@ using namespace std;
 class loginSystem {
     private:
     public:
-    string loginPrompt(SQL*);
-    void registerUser(string,string, SQL*);
-    bool isRegistered(string, SQL*);
-    bool isUser(string, string, SQL*);
+        string loginPrompt(SQL*);
+        void registerUser(string,string, SQL*);
+        bool isRegistered(string, SQL*);
+        bool isUser(string, string, SQL*);
 };
 
 
