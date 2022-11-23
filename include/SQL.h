@@ -35,7 +35,7 @@ class SQL {
         // Course Recommender Functions
         void printTable(string tableName);
         void fetchTable(string tableName);
-        void easyClass(string, int);
+        void easyClass(string, int, string);
 
         // User Database Functions
         bool doesExist(string,string,string);

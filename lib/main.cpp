@@ -13,7 +13,7 @@ int main() {
 
     courseR->addRequirement("HUM-A");
     courseR->addRequirement("HUM-B");
-    courseR->printRec(database);
+    courseR->printRec(database, "Computer Science Courses");
 
     login.loginPrompt(database);
 
