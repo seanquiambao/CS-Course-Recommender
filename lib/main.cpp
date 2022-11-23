@@ -10,12 +10,12 @@ int main() {
     SQL * database = new SQL();
     loginSystem login;
     CourseRecommender* courseR = new CourseRecommender();
-
+    string user = login.loginPrompt(database);
+    
+    // Example of how to use addRequirement(breadth) & printRec(SQL*, tableName)
     courseR->addRequirement("HUM-A");
     courseR->addRequirement("HUM-B");
     courseR->printRec(database, "Computer Science Courses");
-
-    login.loginPrompt(database);
 
     return 0;
 }

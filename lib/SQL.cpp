@@ -125,6 +125,17 @@ void SQL::_createTable(string tableName) {
     }
 }
 
+void SQL::createUserTable(string username) {
+    string sql = "CREATE TABLE IF NOT EXISTS '" + username +"'"
+                    "("
+                    "breadth TEXT PRIMARY KEY NOT NULL"
+                    ");";
+
+         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+         if(rc != SQLITE_OK) cout << "Error: " << zErrMsg << endl;
+        
+}
+
 void SQL::insertTable(vector<string> columns, string tableName) {
     // Load insert test statement
     string sql = "INSERT INTO '" + tableName
@@ -138,6 +149,19 @@ void SQL::insertTable(vector<string> columns, string tableName) {
     // Execute SQL Statement
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
 
+}
+
+void SQL::deleteDataFromTable(string tableName, string columnName, string condition) {
+    string sql = "DELETE FROM '"
+                + tableName
+                + "' WHERE "
+                + columnName
+                + " = '"
+                + condition
+                + "';";
+
+    rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+    if(rc != SQLITE_OK) _showErrMsg(db);
 }
 
 // Fetch a a list of data entries from a table
