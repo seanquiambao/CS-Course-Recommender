@@ -40,7 +40,9 @@ class SQL {
         // User Database Functions
         bool doesExist(string,string,string);
         void insertTable(vector<string>, string);
+        void deleteDataFromTable(string, string, string);
         void getValue(string, string, string, string);
+        void createUserTable(string);
 };
 
 #endif

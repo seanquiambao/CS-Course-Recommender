@@ -11,9 +11,8 @@ using namespace std;
 class loginSystem {
     private:
     public:
-    void loginPrompt(SQL*);
+    string loginPrompt(SQL*);
     void registerUser(string,string, SQL*);
-    void loadData(string);
     bool isRegistered(string, SQL*);
     bool isUser(string, string, SQL*);
 };
