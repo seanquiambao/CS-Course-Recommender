@@ -13,6 +13,8 @@ class CourseRecommender {
     private:
         vector<string> requiredBreadth;
     public:
+        CourseRecommender();
+        ~CourseRecommender();
         void printRec(SQL*, string); // Loop through required breadth vector, each elements calls print easiest class.
         void printEasiestClasses(SQL*, string, string);
         void addRequirement(string requirementName);

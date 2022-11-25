@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 #include "../include/SQL.h"
 
@@ -49,82 +50,51 @@ SQL::~SQL() {
     if (zErrMsg != nullptr) {delete zErrMsg;}
 }
 
-// Create a callback function  
-int callback(void *NotUsed, int argc, char **argv, char **azColName){
-
-    // int argc: holds the number of results
-    // (array) azColName: holds each column returned
-    // (array) argv: holds each value
-
-    for(int i = 0; i < argc; i++) {
-        
-        // Show column name, value, and newline
-        cout << azColName[i] << ": " << argv[i] << endl;
-    }
-
-    // Insert a newline
-    cout << endl;
-
-    // Return successful
-    return 0;
-}
-
 // create type of SQL table in database based on passed in tableName
 void SQL::_createTable(string tableName) {
+    string sql;
+    sqlite3_stmt* statement;
 
     if (tableName == "Course Difficulty") {
 
         //SQL language: Create Table with passed in tableName
-        string sql = "CREATE TABLE IF NOT EXISTS 'Course Difficulty'"
+        sql = "CREATE TABLE IF NOT EXISTS 'Course Difficulty'"
                     "("
                     "name TEXT NOT NULL,"
                     "difficulty REAL NOT NULL,"
                     "UNIQUE(name, difficulty)"
                     ");";
-
-        // Execute SQL Statement
-         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
-         if (rc != SQLITE_OK) _showErrMsg(db);
-         
     }
     if(tableName == "Breadth Courses") {
 
-        string sql = "CREATE TABLE IF NOT EXISTS 'Breadth Courses'"
+        sql = "CREATE TABLE IF NOT EXISTS 'Breadth Courses'"
                     "("
                     "name TEXT NOT NULL,"
                     "units INTEGER NOT NULL," 
                     "requirements TEXT NOT NULL,"
                     "UNIQUE(name, units, requirements)"
                     ");";
-
-        rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
     }
 
     if(tableName == "User Database") {
         //SQL language: Create Table with passed in tableName
-        string sql = "CREATE TABLE IF NOT EXISTS 'User Database'"
+        sql = "CREATE TABLE IF NOT EXISTS 'User Database'"
                     "("
                     "username TEXT PRIMARY KEY NOT NULL,"
                     "password TEXT NOT NULL"
-                    ");";
-        
-        // Execute SQL Statement
-         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
-         if(rc != SQLITE_OK) cout << "Error: " << zErrMsg << endl;
+                    ");"; 
     }
     if(tableName == "Computer Science Courses") {
-        string sql = "CREATE TABLE IF NOT EXISTS 'Computer Science Courses'"
+        sql = "CREATE TABLE IF NOT EXISTS 'Computer Science Courses'"
                     "("
                     "name TEXT NOT NULL,"
                     "units INTEGER NOT NULL,"
                     "requirements TEXT NOT NULL,"
                     "UNIQUE(name, units, requirements)"
                     ");";
-
-         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
-         if(rc != SQLITE_OK) cout << "Error: " << zErrMsg << endl;
-            
     }
+
+    _executeSQL(sql);
 }
 
 void SQL::createUserTable(string username) {
@@ -133,8 +103,7 @@ void SQL::createUserTable(string username) {
                     "breadth TEXT PRIMARY KEY NOT NULL"
                     ");";
 
-         rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
-         if(rc != SQLITE_OK) cout << "Error: " << zErrMsg << endl;
+    _executeSQL(sql);
         
 }
 
@@ -149,8 +118,7 @@ void SQL::insertTable(vector<string> columns, string tableName) {
         else sql += "'" + columns[i] + "', ";
     }
     // Execute SQL Statement
-    rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
-
+    _executeSQL(sql);
 }
 
 void SQL::deleteDataFromTable(string tableName, string columnName, string condition) {
@@ -162,10 +130,23 @@ void SQL::deleteDataFromTable(string tableName, string columnName, string condit
                 + condition
                 + "';";
 
-    rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
-    if(rc != SQLITE_OK) _showErrMsg(db);
+    _executeSQL(sql);
 }
 
+// Fetch a a list of data entries from a table
+void SQL::fetchTable(string tableName) {
+    string sql = "SELECT * FROM '" +  tableName + "';";
+    // Execute SQL Statement and store into DataTable struct
+    _fetchSQL(sql);
+}
+
+void SQL::_executeSQL(string SQLstatement) {
+    sqlite3_stmt* statement;
+    rc = sqlite3_prepare_v2(db, SQLstatement.c_str(), -1, &statement, NULL);
+    if(rc == SQLITE_OK) sqlite3_step(statement);
+    else _showErrMsg(db);
+    sqlite3_finalize(statement);
+}
 // Fetch a a list of data entries from a table
 void SQL::_fetchSQL(string sql) {
     int pnRow;
@@ -184,21 +165,8 @@ void SQL::_fetchSQL(string sql) {
 
     if (rc == SQLITE_OK){dataTable = new DataTable(pazResult, pnColumn, pnRow);}
     else {_showErrMsg(db);} 
-}
 
-// Prints all data entries from passed in tableName
-void SQL::printTable(string tableName) {
-    string sql = "SELECT * FROM '" +  tableName + "';";
-    // Execute SQL Statement
-    rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
-    cout << zErrMsg << endl;
-}
-
-// Fetch a a list of data entries from a table
-void SQL::fetchTable(string tableName) {
-    string sql = "SELECT * FROM '" +  tableName + "';";
-    // Execute SQL Statement and store into DataTable struct
-    _fetchSQL(sql);
+    sqlite3_free_table(pazResult);
 }
 
 // Reading data from CSV file
@@ -216,15 +184,18 @@ void SQL::_readData(string fileName, string tableName) {
         cout << "Error opening file" << endl;
         return;
     }
-    else cout << "Success!" << endl;
+    else cout << "Reading file..." << endl;
+
 
     while(getline(inFS, line)) // Reads every line in CSV file
     {
+
         stringstream ss (line);
         while(getline(ss, data, ',')) dataVector.push_back(data); // Reads through the line and pushes data in data vector.
         insertTable(dataVector, tableName); // Insert to table
         dataVector.clear();
     }
+    cout << endl;
     inFS.close();
 
 }

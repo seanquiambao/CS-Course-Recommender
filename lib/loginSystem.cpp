@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <string>
+#include <thread>
 
 using namespace std;
 
@@ -17,22 +18,30 @@ string loginSystem::loginPrompt(SQL* database) {
 
     while(true) {
         
-        
+        system("clear");  
         char choice = 0;
+        cout << "============================================" << endl;
         cout << "COMP SCI COURSE RECOMMENDER - Login" << endl;
-        cout << "Login? (enter 'y' to login): ";
+        cout << "============================================" << endl;
+        cout << "Login? (enter 'y' to login, enter any other key to exit program): ";
 
         cin >> choice;
         tolower(choice);
-        if(choice != 'y') return "";
+        if(choice != 'y') {
+            system("clear");
+            return "";
+        }
         cin.ignore();
         
 
         cout << "Username: ";
         getline(cin, username);
         if(!isRegistered(username, database)) {
+            system("clear");
 
-            cout << "User is not in the database, register? (enter 'y' to register): ";
+            cout << "The username '" + username 
+                        +"' is not in the database.\n"
+                        + "Do you wish to register? (enter 'y' to register, otherwise enter any other key): ";
             cin >> choice;
             tolower(choice);
 
@@ -58,8 +67,10 @@ string loginSystem::loginPrompt(SQL* database) {
         
         
     }
+    system("clear");
 
     cout << "Sucess! Loading data..." << endl;
+
     return username;
 
     
@@ -73,10 +84,21 @@ void loginSystem::registerUser(string userName, string password, SQL* database) 
     database->createUserTable(userName);
 }
 bool loginSystem::isRegistered(string username, SQL* database) {
-    return database->doesExist(username, "username", "User Database");
+    if(database->doesExist(username, "username", "User Database")) {
+        delete database->dataTable;
+        return true;
+    }
+
+    delete database->dataTable;
+    return false;
+
+    
 }
 bool loginSystem::isUser(string username, string password, SQL* database) {
+    bool access = false;
     database->getValue("password", "username", username, "User Database");
-    if(password == database->dataTable->getData(1, 1)) return true;
-    return false;
+    if(password == database->dataTable->getData(1, 1)) access = true;
+    
+    delete database->dataTable;
+    return access;
 }

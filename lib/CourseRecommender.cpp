@@ -8,7 +8,10 @@
 using namespace std;
 
 //Constructor stores breadth requirements and displays classes
-
+CourseRecommender::CourseRecommender() {
+    requiredBreadth = {};
+}
+CourseRecommender::~CourseRecommender() {}
 void CourseRecommender::printRec(SQL* db, string tableName) {
     if(tableName == "Breadth Courses") {
         for(int i = 0; i < this->requiredBreadth.size(); ++i)
@@ -29,6 +32,8 @@ void CourseRecommender::printEasiestClasses(SQL* db, string breadth, string tabl
     cout << "=======================" << endl;
     db->dataTable->printTable();
     cout << endl << "=======================" << endl;
+
+    delete db->dataTable;
 }
 
 void CourseRecommender::addRequirement(string requirementName) {

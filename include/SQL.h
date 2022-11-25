@@ -13,13 +13,14 @@ using namespace std;
 class SQL {
     private:
         // Variables
-        sqlite3 *db;
-        char *zErrMsg;
+        sqlite3 *db = nullptr;
+        char *zErrMsg = nullptr;
         int rc;
 
         void _showErrMsg(sqlite3*);
         void _createTable(string tableName);
         void _readData(string,string);
+        void _executeSQL(string);
 
         // Populates DataTable class with data fetched from passed in SQL Queries
         void _fetchSQL(string);
@@ -33,7 +34,6 @@ class SQL {
         DataTable *dataTable;
 
         // Course Recommender Functions
-        void printTable(string tableName);
         void fetchTable(string tableName);
         void easyClass(string, int, string);
 
