@@ -23,6 +23,7 @@ class CourseRecommender {
         void addRequirementPrompt(SQL* db); // prompts user to enter breadth requirements
         void removeRequirementPrompt(SQL* db); // prompts user to remove breadth requirements
         bool validBreadth(string); // checks if string is a valid breadth
+        void changeClassLevel(); // changes between freshman all the way to senior
 };
 
 #endif
