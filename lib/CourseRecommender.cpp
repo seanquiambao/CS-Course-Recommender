@@ -9,9 +9,11 @@ using namespace std;
 
 //Constructor stores breadth requirements and displays classes
 CourseRecommender::CourseRecommender(string user, SQL* db) {
-    int limit = db->get_nRow();
-    username = user;
-    db->fetchTable(user);
+    this->username = user;
+    this->classLevel = "FRESHMEN";
+    db->fetchTable(username);
+    if(db->dataTable->isEmpty()) return;
+    int limit = db->dataTable->numResults();
     for (int i = 0; i < limit; i++) {
         requiredBreadth.push_back(db->dataTable->getData(1, i));
     }

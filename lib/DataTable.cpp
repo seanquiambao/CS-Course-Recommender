@@ -28,9 +28,6 @@ DataTable::~DataTable() {
     for (auto strPtr: vecStr) { delete strPtr; }
 }
 
-// nRow getter
-int DataTable::getnRow() { return nRow;}
-
 // Prints contents of DataTable to termiminal
 void DataTable::printTable() {
     for (unsigned i = 0; i < (nRow + 1) * nCol; ++i) {

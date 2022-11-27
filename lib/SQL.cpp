@@ -69,10 +69,7 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName){
     return 0;
 }
 
-// nRow getter
-int SQL::get_nRow() {
-    return dataTable->getnRow();
-}
+
 
 // create type of SQL table in database based on passed in tableName
 void SQL::_createTable(string tableName) {
