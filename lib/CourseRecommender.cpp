@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <iterator>
-
+#include <algorithm>
 #include "../include/CourseRecommender.h"
 
 using namespace std;
@@ -33,4 +33,37 @@ void CourseRecommender::printEasiestClasses(SQL* db, string breadth, string tabl
 
 void CourseRecommender::addRequirement(string requirementName) {
     this->requiredBreadth.push_back(requirementName);
+}
+
+void CourseRecommender::requirementPrompt() {
+    string breadth;
+    cout << "Enter breadth courses not taken yet: ENGL, HUM-A, HUM-B, HUM-C, SS-A, SS-B, SS-C, ETHNICITY, SCI-A, SCI-B (q to finish):" << endl;
+    cin >> breadth;
+    while (breadth != "q") {
+        if (validBreadth(breadth)) {
+            if (find(requiredBreadth.begin(), requiredBreadth.end(), breadth) != requiredBreadth.end()) {
+            cout << breadth << " is already in the requirements." << endl;
+            }
+            else {
+                addRequirement(breadth);
+                cout << breadth << " has been added." << endl;
+            }
+        }
+        cout << "Enter breadth courses not taken yet: ENGL, HUM-A, HUM-B, HUM-C, SS-A, SS-B, SS-C, ETHNICITY, SCI-A, SCI-B (q to finish):" << endl;
+        cin >> breadth;
+    }
+    cout << "Exiting..." << endl;
+}
+
+bool CourseRecommender::validBreadth(string breadth) {
+    if (breadth == "ENGL" || breadth == "HUM-A" || breadth == "HUM-B" || 
+        breadth == "HUM-C" || breadth == "SS-A" || breadth == "SS-B" || 
+        breadth == "SS-C" || breadth == "ETHNICITY" || breadth == "SCI-A" || 
+        breadth == "SCI-B") {
+        return true;
+    }
+    else {
+        return false;
+    }
+
 }
