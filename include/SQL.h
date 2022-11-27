@@ -36,6 +36,7 @@ class SQL {
         void printTable(string tableName);
         void fetchTable(string tableName);
         void easyClass(string, int, string);
+        int get_nRow();
 
         // User Database Functions
         bool doesExist(string,string,string);

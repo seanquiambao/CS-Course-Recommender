@@ -19,6 +19,9 @@ struct DataTable {
         // Deconstructor
         ~DataTable();
 
+        // nRow getter
+        int getnRow();
+
         // Prints contents of DataTable to termiminal
         void printTable();
 

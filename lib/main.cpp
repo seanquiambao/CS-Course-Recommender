@@ -9,13 +9,14 @@ using namespace std;
 int main() {
     SQL * database = new SQL();
     loginSystem login;
-    CourseRecommender* courseR = new CourseRecommender();
     string user = login.loginPrompt(database);
-    
+    if (user == "") 
+        return 0;
+    CourseRecommender* courseR = new CourseRecommender(user, database);
     // Example of how to use addRequirement(breadth) & printRec(SQL*, tableName)
-    courseR->addRequirement("HUM-A");
-    courseR->addRequirement("HUM-B");
-    courseR->printRec(database, "Computer Science Courses");
+    courseR->addRequirementPrompt(database);
+    courseR->removeRequirementPrompt(database);
+    courseR->printRec(database, "Breadth Courses");
 
-    return 0;
+    return 0;   
 }
