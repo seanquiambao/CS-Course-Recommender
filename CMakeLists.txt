@@ -8,6 +8,7 @@ ADD_EXECUTABLE(fullCompile
     lib/SQL.cpp
     lib/CourseRecommender.cpp
     lib/DataTable.cpp
+    lib/UI.cpp
 )
 
 TARGET_LINK_LIBRARIES(fullCompile sqlite3)

@@ -135,3 +135,7 @@ void CourseRecommender::changeClassLevel() {
     }  
     cout << "Exiting changing class level" << endl;
 }
+
+string CourseRecommender::getClassLevel() {
+    return this->classLevel;
+}
