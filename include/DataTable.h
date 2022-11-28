@@ -29,7 +29,7 @@ struct DataTable {
         bool isEmpty() { return vecStr.size() == 0;}
 
         // returns number of results
-        unsigned numResults() { return nRow - 1;}
+        unsigned numResults() { return nRow;}
 
 };
 

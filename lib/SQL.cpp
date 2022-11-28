@@ -69,6 +69,8 @@ int callback(void *NotUsed, int argc, char **argv, char **azColName){
     return 0;
 }
 
+
+
 // create type of SQL table in database based on passed in tableName
 void SQL::_createTable(string tableName) {
 
