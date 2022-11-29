@@ -46,7 +46,8 @@ TEST(SQLTests, fetchTable_Valid) {
 }
 
 TEST(SQLTests, fetchTable_Invalid) {
-    EXPECT_DEATH(db->fetchTable("dsajgkdsa"), "SQL ERROR");
+    db->fetchTable("dsajgkdsa");
+    EXPECT_NE(db->getRC(), SQLITE_OK);
 }
 // ======================= COURSE RECOMMENDER COMMANDS =============================
 TEST(SQLTests, easyClass_ValidQuery) {
@@ -64,7 +65,8 @@ TEST(SQLTests, easyClass_EmptyQuery) {
 }
 
 TEST(SQLTests, easyClass_InvalidTable) {
-    EXPECT_DEATH(db->easyClass("SOPHOMORE", 10, "Squidward"), "SQL ERROR");
+    db->easyClass("SOPHOMORE", 10, "Squidward");
+    EXPECT_NE(db->getRC(), SQLITE_OK);
 }
 
 TEST(SQLTests, getValue_Valid) {
@@ -78,7 +80,8 @@ TEST(SQLTests, getValue_EmptyQuery) {
     
 }
 TEST(SQLTests, getValue_InvalidTable) {
-    EXPECT_DEATH(db->getValue("difficulty", "name", "foo", "foo"), "SQL ERROR");
+    db->getValue("difficulty", "name", "foo", "foo");
+    EXPECT_NE(SQLITE_OK, db->getRC());
 }
 // ======================= LOGIN SYSTEM =============================
 

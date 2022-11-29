@@ -19,6 +19,7 @@ TEST(UIMenuTest, testMenuPrompmt) {
 TEST(UIMenuTest, testMenuSystem) {
     UI ui;
     EXPECT_NO_THROW({
+        db->createUserTable("123");
         ui.menuSystem("123", db);
     });
 }
