@@ -49,27 +49,8 @@ SQL::~SQL() {
     if (zErrMsg != nullptr) {delete zErrMsg;}
 }
 
-// Create a callback function  
-int callback(void *NotUsed, int argc, char **argv, char **azColName){
-
-    // int argc: holds the number of results
-    // (array) azColName: holds each column returned
-    // (array) argv: holds each value
-
-    for(int i = 0; i < argc; i++) {
-        
-        // Show column name, value, and newline
-        cout << azColName[i] << ": " << argv[i] << endl;
-    }
-
-    // Insert a newline
-    cout << endl;
-
-    // Return successful
-    return 0;
-}
-
-
+// Getter for getting rc for testing reasons
+int SQL::getRC() { return this->rc;}
 
 // create type of SQL table in database based on passed in tableName
 void SQL::_createTable(string tableName) {
@@ -186,14 +167,6 @@ void SQL::_fetchSQL(string sql) {
 
     if (rc == SQLITE_OK){dataTable = new DataTable(pazResult, pnColumn, pnRow);}
     else {_showErrMsg(db);} 
-}
-
-// Prints all data entries from passed in tableName
-void SQL::printTable(string tableName) {
-    string sql = "SELECT * FROM '" +  tableName + "';";
-    // Execute SQL Statement
-    rc = sqlite3_exec(db, sql.c_str(), callback, 0, &zErrMsg);
-    cout << zErrMsg << endl;
 }
 
 // Fetch a a list of data entries from a table

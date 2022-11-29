@@ -7,6 +7,13 @@
 
 using SQLDATABASE::db;
 
+// ======================= CONSTRUCTOR SQL COMMANDS =============================
+TEST(SQLTests, Constructor) {
+    SQL* sql;
+    ASSERT_NO_FATAL_FAILURE(sql = new SQL());
+}
+
+
 // ======================= GENERAL SQL COMMANDS =============================
 TEST(SQLTests, createUserTable) {
     db->createUserTable("foo");
@@ -21,10 +28,17 @@ TEST(SQLTests, deleteDataFromTable_Valid) {
 }
 
 TEST(SQLTests, deleteDataFromTable_InvalidTable) {
-    db->insertTable({"foo", "boo"}, "User Database");
-    EXPECT_DEATH(db->deleteDataFromTable("soo", "username", "boo"), "SQL ERROR");
+    db->deleteDataFromTable("soo", "username", "boo");
+    EXPECT_NE(db->getRC(), SQLITE_OK);
 }
 
+TEST(SQLTests, InsertTable_Valid) {
+    db->createUserTable("User Database");
+    db->insertTable({"foo", "Bar"}, "User Database");
+    EXPECT_EQ(SQLITE_OK, db->getRC());
+    db->doesExist("foo", "username", "User Database");
+    EXPECT_FALSE(db->dataTable->isEmpty());
+}
 
 TEST(SQLTests, fetchTable_Valid) {
     db->fetchTable("Course Difficulty");

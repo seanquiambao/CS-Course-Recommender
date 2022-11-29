@@ -12,7 +12,6 @@ struct DataTable {
         int nCol, nRow;
         vector<string*> vecStr;
     public:
-
         // Construct empty array with initialized size of columns/rows
         DataTable(char** pazResult, int nCol, int nRow);
         
