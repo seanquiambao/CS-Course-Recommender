@@ -43,6 +43,7 @@ class SQL {
         void deleteDataFromTable(string, string, string);
         void getValue(string, string, string, string);
         void createUserTable(string);
+        int getRC();
 };
 
 #endif
