@@ -11,8 +11,8 @@ using namespace std;
 
 class CourseRecommender {
     private:
-		string username;
-		string classLevel;
+		    string username;
+		    string classLevel;
         vector<string> requiredBreadth;
 
     public:
