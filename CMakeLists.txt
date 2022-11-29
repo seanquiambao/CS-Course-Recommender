@@ -20,6 +20,7 @@ ADD_EXECUTABLE(UnitTest
     lib/CourseRecommender.cpp
     lib/DataTable.cpp
     lib/UI.cpp
+
 )
 INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/test/lib/googletest/include/
