@@ -34,7 +34,6 @@ class SQL {
         DataTable *dataTable;
 
         // Course Recommender Functions
-        void printTable(string tableName);
         void fetchTable(string tableName);
         void easyClass(string, int, string);
 

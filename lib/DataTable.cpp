@@ -41,5 +41,6 @@ void DataTable::printTable() {
 
 // Get data entry cell of DataTable
 string DataTable::getData(int column, int row) {
+    if (row > nRow || column > nCol) {return "";}
     return vecStr.at(row * nCol + column - 1)->data();
 }
