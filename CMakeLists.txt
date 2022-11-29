@@ -18,6 +18,10 @@ TARGET_INCLUDE_DIRECTORIES(CourseRecFunctions PUBLIC
 )
 ADD_EXECUTABLE(UnitTest
     tests/UnitTests.cpp
+    lib/loginSystem.cpp
+    lib/SQL.cpp
+    lib/CourseRecommender.cpp
+    lib/DataTable.cpp
 )
 ADD_EXECUTABLE(CSCourseRecommender
     lib/main.cpp

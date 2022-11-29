@@ -11,9 +11,10 @@ using namespace std;
 
 class CourseRecommender {
     private:
-		string username;
-		string classLevel;
-    vector<string> requiredBreadth;
+		    string username;
+		    string classLevel;
+        vector<string> requiredBreadth;
+
 
     public:
         CourseRecommender(string user, SQL* db);
