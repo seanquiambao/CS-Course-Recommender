@@ -2,10 +2,33 @@
 #define __UIMENUTEST_H__
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-// #include "../include/UIMenu.h" PLEASE REPLACE WITH THE CORRECT HEADER FILE
+#include "../include/UI.h"
+#include "../include/SQL.h"
+#include "../include/CourseRecommender.h"
+#include "Instantiation.h"
 
-TEST(UIMenuTest, TestCheck) {
-    EXPECT_TRUE(true);
+using SQLDATABASE::db;
+
+TEST(UIMenuTest, testMenuPrompmt) {
+    UI ui;
+    EXPECT_NO_THROW({
+        ui.menuPrompt();
+    });
+}
+
+TEST(UIMenuTest, testMenuSystem) {
+    UI ui;
+    EXPECT_NO_THROW({
+        ui.menuSystem("123", db);
+    });
+}
+
+TEST(UIMenuTest, testViewRecCourses) {
+    UI ui;
+    CourseRecommender courseReco("123", db);
+    EXPECT_NO_THROW({
+        ui.viewRecCoursesOptions(courseReco, db);
+    });
 }
 
 #endif
