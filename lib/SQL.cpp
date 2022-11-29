@@ -34,9 +34,9 @@ SQL::SQL(){
     cout << "Created tables" << endl;
 
     // Populate Tables from csv files in db directory
-    _readData("db/difficultyDatabase.csv", "Course Difficulty");
-    _readData("db/breadthCourses.csv", "Breadth Courses");
-    _readData("db/computerScienceClasses.csv", "Computer Science Courses");
+    _readData("../db/difficultyDatabase.csv", "Course Difficulty");
+    _readData("../db/breadthCourses.csv", "Breadth Courses");
+    _readData("../db/computerScienceClasses.csv", "Computer Science Courses");
 }
 
 // Destructor
@@ -279,3 +279,5 @@ bool SQL::doesExist(string given, string column, string tableName) {
     _fetchSQL(sql);
     return !this->dataTable->isEmpty();
 }
+
+int SQL::getRC() { return rc; }
