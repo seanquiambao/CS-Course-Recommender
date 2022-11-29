@@ -74,10 +74,14 @@ void loginSystem::registerUser(string userName, string password, SQL* database) 
     database->createUserTable(userName);
 }
 bool loginSystem::isRegistered(string username, SQL* database) {
-    return database->doesExist(username, "username", "User Database");
+    bool registered = database->doesExist(username, "username", "User Database");
+    delete database->dataTable;
+    return registered;
 }
 bool loginSystem::isUser(string username, string password, SQL* database) {
+    bool valid = false;
     database->getValue("password", "username", username, "User Database");
-    if(password == database->dataTable->getData(1, 1)) return true;
-    return false;
+    if(password == database->dataTable->getData(1, 1)) valid = true;
+    delete database->dataTable;
+    return valid;
 }

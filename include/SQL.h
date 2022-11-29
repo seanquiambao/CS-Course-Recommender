@@ -13,9 +13,9 @@ using namespace std;
 class SQL {
     private:
         // Variables
-        sqlite3 *db;
-        char *zErrMsg;
-        int rc;
+        sqlite3 *db = nullptr;
+        char *zErrMsg = nullptr;
+        int rc = 0;
 
         void _showErrMsg(sqlite3*);
         void _createTable(string tableName);
@@ -23,6 +23,7 @@ class SQL {
 
         // Populates DataTable class with data fetched from passed in SQL Queries
         void _fetchSQL(string);
+        void _executeSQL(string);
 
     public:
 
