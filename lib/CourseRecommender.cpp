@@ -12,7 +12,10 @@ CourseRecommender::CourseRecommender(string user, SQL* db) {
     this->username = user;
     this->classLevel = "FRESHMEN";
     db->fetchTable(this->username);
-    if(db->dataTable->isEmpty()) return;
+    if(db->dataTable->isEmpty()) {
+        delete db->dataTable;
+        return;
+    }
 
     int limit = db->dataTable->numResults();
     for (int i = 1; i <= limit; i++) {
