@@ -15,10 +15,7 @@ class UI {
     public: 
         void menuSystem(string, SQL*);
         void menuPrompt();
-        void viewRecCourses(CourseRecommender, SQL*);
-        // void addBreadthCourses();
-        // void removeBreadthCourses();
-        // void changeClassLevel();
+        void viewRecCoursesOptions(CourseRecommender, SQL*);
 };
 
 #endif

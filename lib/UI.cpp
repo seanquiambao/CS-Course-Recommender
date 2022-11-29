@@ -5,37 +5,37 @@ void UI::menuSystem(string user, SQL* database) {
 
     system("clear");
     CourseRecommender courseReco(user, database);
-    int choice = 0;
+    char choice = '0';
 
     do {
         menuPrompt();
         cin >> choice;
 
         switch(choice) {
-            case 1:
+            case '1':
                 //system("CLS") does not work on macOS
                 //not sure if system("clear") works on Windows
                 system("clear");
 
                 //problem: stacking printRec() functions on recursive calls, like so, causes weird behavior on output
-                courseReco.printRec(database, "Computer Science Courses");
-                courseReco.printRec(database, "Breadth Courses");
+                //courseReco.printRec(database, "Computer Science Courses");
+                //courseReco.printRec(database, "Breadth Courses");
 
-                //viewRecCourses(courseReco, database);
+                viewRecCoursesOptions(courseReco, database);
                 break;
-            case 2:
+            case '2':
                 system("clear");
                 courseReco.addRequirementPrompt(database);
                 break;
-            case 3:
+            case '3':
                 system("clear");
                 courseReco.removeRequirementPrompt(database);
                 break;
-            case 4:
+            case '4':
                 system("clear");
                 courseReco.changeClassLevel();
                 break;
-            case 5:
+            case '5':
                 system("clear");
                 cout << "Goodbye." << endl;
                 break;
@@ -45,7 +45,7 @@ void UI::menuSystem(string user, SQL* database) {
                 break;
         }
 
-    } while(choice != 5);
+    } while(choice != '5');
 }
 
 void UI::menuPrompt() {
@@ -58,7 +58,7 @@ void UI::menuPrompt() {
     cout << "Please choose: ";
 }
 
-void UI::viewRecCourses(CourseRecommender courseReco, SQL* database) {
+void UI::viewRecCoursesOptions(CourseRecommender courseReco, SQL* database) {
 
     int choice = 0;
 
