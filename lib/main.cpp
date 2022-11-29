@@ -16,5 +16,7 @@ int main() {
     
     UI ui;
     ui.menuSystem(user, database);
+
+    delete database;
     return 0;   
 }
