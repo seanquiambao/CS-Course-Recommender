@@ -279,3 +279,5 @@ bool SQL::doesExist(string given, string column, string tableName) {
     _fetchSQL(sql);
     return !this->dataTable->isEmpty();
 }
+
+int SQL::getRC() { return rc; }

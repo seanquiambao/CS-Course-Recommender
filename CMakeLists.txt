@@ -12,22 +12,23 @@ ADD_LIBRARY(CourseRecFunctions
   lib/DataTable.cpp
   lib/UI.cpp
 )
+
 TARGET_INCLUDE_DIRECTORIES(CourseRecFunctions PUBLIC
   "${PROJECT_SOURCE_DIR}/include"
-)
-
-ADD_EXECUTABLE(CSCourseRecommender
-    lib/main.cpp
 )
 ADD_EXECUTABLE(UnitTest
     tests/UnitTests.cpp
 )
+ADD_EXECUTABLE(CSCourseRecommender
+    lib/main.cpp
+)
+
 INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/test/lib/googletest/include/
   ${CMAKE_SOURCE_DIR}/test/lib/googlemock/include/
 )
 
-TARGET_LINK_LIBRARIES(CSCourseRecommender PUBLIC CourseRecFunctions sqlite3 gtest gmock)
 TARGET_LINK_LIBRARIES(UnitTest PUBLIC CourseRecFunctions sqlite3 gtest gmock)
+TARGET_LINK_LIBRARIES(CSCourseRecommender PUBLIC CourseRecFunctions sqlite3 gtest gmock)
 
 
