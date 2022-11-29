@@ -15,6 +15,7 @@ class CourseRecommender {
 		    string classLevel;
         vector<string> requiredBreadth;
 
+
     public:
         CourseRecommender(string user, SQL* db);
         void printRec(SQL*, string); // Loop through required breadth vector, each elements calls print easiest class.
@@ -27,6 +28,7 @@ class CourseRecommender {
         void removeRequirementPrompt(SQL* db); // prompts user to remove breadth requirements
         bool validBreadth(string); // checks if string is a valid breadth
         void changeClassLevel(); // changes between freshman all the way to senior
+        string getClassLevel();
 
 };
 

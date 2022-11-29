@@ -19,6 +19,7 @@ string loginSystem::loginPrompt(SQL* database) {
         
         
         char choice = 0;
+        cout << endl;
         cout << "COMP SCI COURSE RECOMMENDER - Login" << endl;
         cout << "Login? (enter 'y' to login): ";
 
@@ -27,11 +28,11 @@ string loginSystem::loginPrompt(SQL* database) {
         if(choice != 'y') return "";
         cin.ignore();
         
-
+        
+        cout << endl;
         cout << "Username: ";
         getline(cin, username);
         if(!isRegistered(username, database)) {
-
             cout << "User is not in the database, register? (enter 'y' to register): ";
             cin >> choice;
             tolower(choice);
@@ -73,10 +74,14 @@ void loginSystem::registerUser(string userName, string password, SQL* database) 
     database->createUserTable(userName);
 }
 bool loginSystem::isRegistered(string username, SQL* database) {
-    return database->doesExist(username, "username", "User Database");
+    bool registered = database->doesExist(username, "username", "User Database");
+    delete database->dataTable;
+    return registered;
 }
 bool loginSystem::isUser(string username, string password, SQL* database) {
+    bool valid = false;
     database->getValue("password", "username", username, "User Database");
-    if(password == database->dataTable->getData(1, 1)) return true;
-    return false;
+    if(password == database->dataTable->getData(1, 1)) valid = true;
+    delete database->dataTable;
+    return valid;
 }

@@ -12,14 +12,13 @@ CourseRecommender::CourseRecommender(string user, SQL* db) {
     this->username = user;
     this->classLevel = "FRESHMEN";
     db->fetchTable(this->username);
-    if(db->dataTable->isEmpty())
-    {
-        cout << "Empty!" << endl;
+    if(db->dataTable->isEmpty()) {
+        delete db->dataTable;
         return;
     }
+
     int limit = db->dataTable->numResults();
     for (int i = 1; i <= limit; i++) {
-        cout << "Pushing" << endl;
         requiredBreadth.push_back(db->dataTable->getData(1, i));
     }
     delete db->dataTable;
@@ -40,10 +39,11 @@ void CourseRecommender::printRec(SQL* db, string tableName) {
 
 void CourseRecommender::printEasiestClasses(SQL* db, string course, string tableName) {
     db->easyClass(course, 10, tableName);
+    cout << "==============================================" << endl;
     cout << course << endl;
-    cout << "=======================" << endl;
+    cout << "==============================================" << endl;
     db->dataTable->printTable();
-    cout << endl << "=======================" << endl;
+    cout << endl;
     delete db->dataTable;
 }
 
@@ -56,9 +56,13 @@ void CourseRecommender::addRequirement(string requirementName, SQL* db) {
 
 void CourseRecommender::addRequirementPrompt(SQL* db) {
     string breadth;
-    while (breadth != "q") {
-                cout << "Enter breadth courses not taken yet: ENGL, HUM-A, HUM-B, HUM-C, SS-A, SS-B, SS-C, ETHNICITY, SCI-A, SCI-B (q to finish):" << endl;
+    while (true) {
+        cout << "Enter breadth courses not taken yet: ENGL, HUM-A, HUM-B, HUM-C, SS-A, SS-B, SS-C, ETHNICITY, SCI-A, SCI-B (q to finish):" << endl;
         cin >> breadth;
+        if(breadth == "q") {
+            cout << "Exiting removing requirement" << endl;
+            break;
+        }
         if (validBreadth(breadth)) {
             if (find(requiredBreadth.begin(), requiredBreadth.end(), breadth) != requiredBreadth.end()) {
             cout << breadth << " is already in the requirements." << endl;
@@ -72,8 +76,10 @@ void CourseRecommender::addRequirementPrompt(SQL* db) {
             cout << breadth << " is not a valid breadth course." << endl;
         }
 
+        cout << endl;
+
     }
-    cout << "Exiting adding requirements" << endl;
+    
 }
 
 void CourseRecommender::removeRequirement(string requirementName, SQL* db) {
@@ -89,9 +95,13 @@ void CourseRecommender::removeRequirement(string requirementName, SQL* db) {
 
 void CourseRecommender::removeRequirementPrompt(SQL* db) {
     string breadth;
-    while (breadth != "q") {
+    while (true) {
         cout << "Enter breadth courses to remove from requirements: ENGL, HUM-A, HUM-B, HUM-C, SS-A, SS-B, SS-C, ETHNICITY, SCI-A, SCI-B (q to finish):" << endl;
         cin >> breadth;
+        if(breadth == "q") {
+            cout << "Exiting removing requirement" << endl;
+            return;
+        }
         if (validBreadth(breadth)) {
             if (find(requiredBreadth.begin(), requiredBreadth.end(), breadth) != requiredBreadth.end()) {
                 removeRequirement(breadth, db);
@@ -102,7 +112,6 @@ void CourseRecommender::removeRequirementPrompt(SQL* db) {
             }
         }   
     }
-    cout << "Exiting removing requirement" << endl;
 }
 bool CourseRecommender::validBreadth(string breadth) {
     if (breadth == "ENGL" || breadth == "HUM-A" || breadth == "HUM-B" || 
@@ -119,19 +128,22 @@ bool CourseRecommender::validBreadth(string breadth) {
 
 void CourseRecommender::changeClassLevel() {
     string level;
-    cout << "What is your class level, FRESHMEN, SOPHOMORE, JUNIOR, SENIOR? (q to exit): " << endl;
-    cin >> level;
-    while (level != "q") {
+    
+    while (true) {
+        cout << "What is your class level, FRESHMEN, SOPHOMORE, JUNIOR, SENIOR? (q to exit): " << endl;
+        cin >> level;
+        if(level == "q") break;
         if (level == "FRESHMEN" || level == "SOPHOMORE" || level == "JUNIOR" || level == "SENIOR"){
             classLevel = level;
             cout << "Class level has been changed to " << level << endl;
             break;
         }
-        else {
-            cout << "Invalid class level" << endl;
-            cout << "What is your class level, FRESHMAN, SOPHOMORE, JUNIOR, SENIOR? (q to exit): " << endl;
-            cin >> level;
-        }
+        else cout << "Invalid class level" << endl;
+
     }  
     cout << "Exiting changing class level" << endl;
+}
+
+string CourseRecommender::getClassLevel() {
+    return this->classLevel;
 }
