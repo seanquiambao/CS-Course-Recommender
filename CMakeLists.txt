@@ -14,6 +14,10 @@ ADD_EXECUTABLE(CSCourseRecommender
 )
 ADD_EXECUTABLE(UnitTest
     tests/UnitTests.cpp
+    lib/loginSystem.cpp
+    lib/SQL.cpp
+    lib/CourseRecommender.cpp
+    lib/DataTable.cpp
 )
 INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/test/lib/googletest/include/
