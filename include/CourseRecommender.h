@@ -13,7 +13,7 @@ class CourseRecommender {
     private:
 		string username;
 		string classLevel;
-        vector<string> requiredBreadth;
+    vector<string> requiredBreadth;
 
     public:
         CourseRecommender(string user, SQL* db);

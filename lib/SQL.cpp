@@ -165,7 +165,6 @@ void SQL::_executeSQL(string SQLstatement) {
 // Fetch a a list of data entries from a table
 void SQL::fetchTable(string tableName) {
     string sql = "SELECT * FROM '" +  tableName + "';";
-    // Execute SQL Statement and store into DataTable struct
     _fetchSQL(sql);
 }
 
