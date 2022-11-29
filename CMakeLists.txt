@@ -5,9 +5,6 @@ ADD_SUBDIRECTORY(third-party-sqlite)
 ADD_SUBDIRECTORY(googletest)
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build) 
 
-
-
-
 ADD_LIBRARY(CourseRecFunctions
   lib/loginSystem.cpp
   lib/SQL.cpp
