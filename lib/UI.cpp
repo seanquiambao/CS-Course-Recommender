@@ -3,7 +3,7 @@
 
 void UI::menuSystem(string user, SQL* database) {
 
-    system("clear");
+    cout << endl;
     CourseRecommender courseReco(user, database);
     char choice = '0';
 
@@ -15,7 +15,7 @@ void UI::menuSystem(string user, SQL* database) {
             case '1':
                 //system("CLS") does not work on macOS
                 //not sure if system("clear") works on Windows
-                system("clear");
+                cout << endl;
 
                 //problem: stacking printRec() functions on recursive calls, like so, causes weird behavior on output
                 //courseReco.printRec(database, "Computer Science Courses");
@@ -24,23 +24,23 @@ void UI::menuSystem(string user, SQL* database) {
                 viewRecCoursesOptions(courseReco, database);
                 break;
             case '2':
-                system("clear");
+                cout << endl;
                 courseReco.addRequirementPrompt(database);
                 break;
             case '3':
-                system("clear");
+                cout << endl;
                 courseReco.removeRequirementPrompt(database);
                 break;
             case '4':
-                system("clear");
+                cout << endl;
                 courseReco.changeClassLevel();
                 break;
             case '5':
-                system("clear");
+                cout << endl;
                 cout << "Goodbye." << endl;
                 break;
             default:
-                system("clear");
+                cout << endl;
                 cout << "Please select 1-5" << endl;
                 break;
         }
@@ -72,19 +72,19 @@ void UI::viewRecCoursesOptions(CourseRecommender courseReco, SQL* database) {
 
         switch(choice) {
             case 1:
-                system("clear");
+                cout << endl;
                 courseReco.printRec(database, "Computer Science Courses");
                 break;
             case 2:
-                system("clear");
+                cout << endl;
                 courseReco.printRec(database, "Breadth Courses");
                 break;
             case 3:
-                system("clear");
+                cout << endl;
                 cout << "Returning...\n";
                 break;
             default:
-                system("clear");
+                cout << endl;
                 cout << "Invalid input.\n";
                 break;
         }

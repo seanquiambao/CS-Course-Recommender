@@ -19,6 +19,7 @@ string loginSystem::loginPrompt(SQL* database) {
         
         
         char choice = 0;
+        cout << endl;
         cout << "COMP SCI COURSE RECOMMENDER - Login" << endl;
         cout << "Login? (enter 'y' to login): ";
 
@@ -27,11 +28,11 @@ string loginSystem::loginPrompt(SQL* database) {
         if(choice != 'y') return "";
         cin.ignore();
         
-
+        
+        cout << endl;
         cout << "Username: ";
         getline(cin, username);
         if(!isRegistered(username, database)) {
-
             cout << "User is not in the database, register? (enter 'y' to register): ";
             cin >> choice;
             tolower(choice);
